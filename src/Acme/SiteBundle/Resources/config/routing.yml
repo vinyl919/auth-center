@@ -1,0 +1,6 @@
+acme_site_homepage:
+    path:     /
+    defaults: { _controller: AcmeSiteBundle:Default:index }
+user_area_homepage:
+    path:     /account
+    defaults: { _controller: AcmeSiteBundle:Default:account }

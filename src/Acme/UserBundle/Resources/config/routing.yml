@@ -1,0 +1,3 @@
+acme_user_register:
+    path:     /register
+    defaults: { _controller: AcmeUserBundle:Register:register }
