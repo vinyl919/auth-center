@@ -5,7 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
 
-class UsersController extends Controller {
+class LoginController extends Controller {
 	
 	
 	public function loginAction(){
@@ -22,7 +22,7 @@ class UsersController extends Controller {
 
 		
 		return $this->render(
-				'AcmeUsersBundle:Users:login.html.twig',
+				'AcmeUserBundle:User:login.html.twig',
 				array (
 						'last_username'=>$session->get(SecurityContext::LAST_USERNAME),
 						'error'=>$error,

@@ -31,6 +31,6 @@ class RegisterController extends Controller {
 		}
 		
 		//return new Response('Dodano usera: '.$user->getUsername());
-		return $this->render('AcmeUserBundle:Register:register.html.twig', array('form'=>$form->createView()));
+		return $this->render('AcmeUserBundle:User:register.html.twig', array('form'=>$form->createView()));
 	}
 }
