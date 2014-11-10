@@ -11,14 +11,8 @@ security:
         default_provider: 
                     entity: { class: AcmeStoreBundle:User, property: username }
 
-    firewalls:
-        login_firewall:
-            pattern: ^/login$
-            anonymous: ~
-            security: false
-        main_site_firewall:
-            pattern: ^/
-            anonymous: ~
+    firewalls: 
+
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -28,7 +22,8 @@ security:
        #     security: false
 
         secured_area:
-            pattern:    ^/app/
+            pattern:    ^/
+            anonymous: ~
             form_login:
                 login_path:  acme_user_login
                 check_path:  login_check
@@ -40,9 +35,8 @@ security:
             #    realm: "Secured Demo Area"
 
     access_control:
-        - { path: ^/demo/secured/hello/admin/, roles: ROLE_ADMIN }
-        - { path: ^/main, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/app/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/app/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/app/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/app, roles: IS_AUTHENTICATED_FULLY }
         
         
