@@ -11,12 +11,12 @@ class IsloggedController extends Controller {
 	
 	public function login_checkAction(){
 		
-		$securityContext = $this->container->get('security.context');
-		if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-			$user = 'ZALOGOWANO!';
+		$token = $this->get('security.context')->getToken()->getUser();
+		
+		if ($token == 'anon.'){
+			return $this->render('AcmeSiteBundle:Default:is-logged.html.twig', array('path'=>$this->generateUrl('acme_user_login'), 'action'=>'Sign in'));
 		} else {
-			$user = 'Nie zalogowano';
+			return $this->render('AcmeSiteBundle:Default:is-logged.html.twig', array('path'=>'account', 'token'=>$token, 'action'=>'My account'));
 		}
-		return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$user));
 	}
 }

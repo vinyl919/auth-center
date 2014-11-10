@@ -1,5 +1,10 @@
 {% extends '::base.html.twig' %}
 {% block body %}
+ {{ render(controller('AcmeSiteBundle:Islogged:login_check')) }}
 
-	{{ dump(data) }}
+	{% if app.security.getToken().getUser() == "anon." %}
+		<a href="{{ url('acme_user_login') }}" >LOGIN OR REGISTER</a>
+	{% else %}
+		<a href="#">Account</a>
+	{% endif %}
 {% endblock %}
