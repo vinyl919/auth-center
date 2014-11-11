@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>
+	{% block title %}
+		{% if title != false %}
+			Default title
+		{% else %}
+			{{ title }}
+		{% endif %}
+	{% endblock %}
+	</title>
+	<link rel="stylesheet" type="text/css" href="{{ asset('style/css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('style/css/bootstrap.min.css') }}">
+	{% block stylesheets %}
+	{% endblock %}
+</head>
+<body>
+<div id="menu" class="navbar-static-top">
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header navbar-right">
+				<div class="navbar-header">
+					<button type="button" class="btn btn-default navbar-btn">
+						 	{{ render(controller('AcmeSiteBundle:Islogged:login_check')) }}
+					</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+</div>
+{% block body %}
+
+
+{% endblock %}
+<div id="footer">
+	<div id="copyrights">
+		All rights reserved.
+	</div>
+	<div class="footer-menu">
+		<p>About</p>
+		<ul>
+			<li><a href="#">Konto</a></li>
+			<li><a href="#">Konto</a></li>
+			<li><a href="#">Konto</a></li>
+		</ul>
+		{% block footer %}{% endblock %}
+	</div>
+<div class="clear"></div>
+</div>
+</body>
+</html>

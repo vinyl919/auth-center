@@ -1,0 +1,54 @@
+body, html {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+
+}
+
+#menu{
+	width: 100%;
+}
+#menu-position{
+	display: block;
+	height: 50px;
+}
+
+#footer{
+	width: 100%;
+	background-color: #333;
+	padding: 30px;
+	color: #fff;
+}
+
+#copyrights{
+	float: right;
+}
+
+.clear{
+	clear: both;
+}
+
+.footer-menu{
+	display: block;
+	margin: 0 auto;
+	width: auto;
+}
+
+.footer-menu a, .footer-menu a:hover{
+	color: #ccc;
+}
+
+.footer-menu ul{
+	list-style: none;
+	margin-left: 8px;
+	padding: 0;
+}
+
+.footer-menu li{
+	margin-top: 3px;
+}
+
+.footer-menu p{
+	font-size: 1.2em;
+	margin-bottom: 0;
+}

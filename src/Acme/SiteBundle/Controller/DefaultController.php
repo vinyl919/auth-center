@@ -16,4 +16,8 @@ class DefaultController extends Controller
     	return new Response("Logowanie dziala!");
     }
     
+    public function testAction(){
+    	return $this->render('AcmeSiteBundle:Default:base.html.twig', array('title'=>'Auth-Center.pl'));
+    }
+    
 }
