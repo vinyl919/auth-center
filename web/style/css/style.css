@@ -13,6 +13,12 @@ body, html {
 	height: 50px;
 }
 
+.navbar-top-menu{
+	max-width: 1000px;
+	display: block;
+	margin: 0 auto;
+}
+
 #footer{
 	width: 100%;
 	background-color: #333;
@@ -51,4 +57,17 @@ body, html {
 .footer-menu p{
 	font-size: 1.2em;
 	margin-bottom: 0;
+}
+
+.form-default{
+	width: 340px;
+	display: block;
+	margin: 20px;
+	padding: 20px;
+	border-right: 1px solid #ddd;
+}
+
+.form-default-label{
+	margin: 10px 0 0 0;
+	color: #666;
 }

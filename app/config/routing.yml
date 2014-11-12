@@ -1,3 +1,7 @@
+acme_cert:
+    resource: "@AcmeCertBundle/Resources/config/routing.yml"
+    prefix:   /
+
 acme_site:
     resource: "@AcmeSiteBundle/Resources/config/routing.yml"
     prefix:   /

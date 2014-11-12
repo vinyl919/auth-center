@@ -1,0 +1,3 @@
+acme_cert_dnform:
+    path: /app/new
+    defaults: { _controller: AcmeCertBundle:Dn:new }

@@ -19,13 +19,18 @@
 <body>
 <div id="menu" class="navbar-static-top">
 	<nav class="navbar navbar-default" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header navbar-right">
+		<div class="navbar-top-menu">
+		<div class="navbar-header navbar-right">
+					<div>
+							{{ render(controller('AcmeSiteBundle:Islogged:login_check')) }}
+					</div>
+			</div>
+			<div class="container-fluid navbar-left">
 				<div class="navbar-header">
-					<button type="button" class="btn btn-default navbar-btn">
-						 	{{ render(controller('AcmeSiteBundle:Islogged:login_check')) }}
-					</button>
-				</div>
+					<div>
+							<a href="#" class="navbar-brand">Demo</a>
+					</div>
+				</div>				
 			</div>
 		</div>
 	</nav>

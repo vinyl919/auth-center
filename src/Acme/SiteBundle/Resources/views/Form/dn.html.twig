@@ -1,0 +1,7 @@
+{% extends 'AcmeSiteBundle:Default:base.html.twig'%}
+{% block body %}
+	<div class="form-default">
+		{% form_theme dnForm 'AcmeFormBundle:Default:default-form.html.twig' %}
+		{{ form(dnForm) }}
+	</div>
+{% endblock %}
