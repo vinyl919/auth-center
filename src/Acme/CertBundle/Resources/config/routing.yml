@@ -1,3 +1,6 @@
 acme_cert_dnform:
     path: /app/new
     defaults: { _controller: AcmeCertBundle:Dn:new }
+get_ca_db:
+    path:    /app/account/ca
+    defaults: { _controller: AcmeCertBundle:Dn:get }

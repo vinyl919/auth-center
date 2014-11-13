@@ -18,3 +18,7 @@ xxx:
     defaults: { _controller: AcmeSiteBundle:Default:index }
 
 ## ======================== ##
+
+acme_user_main_page:
+    path:    /app/account
+    defaults: { _controller: AcmeUserBundle:Account:index }

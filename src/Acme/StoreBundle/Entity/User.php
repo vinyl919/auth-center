@@ -2,14 +2,13 @@
 namespace Acme\StoreBundle\Entity;
 
 use Symfony\Component\Security\Tests\Core\Encoder\PasswordEncoder;
-
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\ Entity
- * @ORM\ Table(name="USER")
+ * @ORM\ Table(name="user")
  * @UniqueEntity(fields="username", message="Username already taken")
  * @UniqueEntity(fields="email", message="Email already taken")
  * @author xxx

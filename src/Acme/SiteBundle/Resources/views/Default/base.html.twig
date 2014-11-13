@@ -4,10 +4,10 @@
 	<meta charset="UTF-8">
 	<title>
 	{% block title %}
-		{% if title != false %}
-			Default title
-		{% else %}
+		{% if title is defined %}
 			{{ title }}
+		{% else %}
+			Default title
 		{% endif %}
 	{% endblock %}
 	</title>
@@ -35,10 +35,10 @@
 		</div>
 	</nav>
 </div>
+<div id="body-main-content">
 {% block body %}
-
-
 {% endblock %}
+</div>
 <div id="footer">
 	<div id="copyrights">
 		All rights reserved.
