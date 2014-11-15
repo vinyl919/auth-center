@@ -9,7 +9,7 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return new Response("It works!");
+        return $this->render('AcmeSiteBundle:Default:base.html.twig', array('title'=>'Twoje centrum autoryzacji'));
     }
     
     public function accountAction(){

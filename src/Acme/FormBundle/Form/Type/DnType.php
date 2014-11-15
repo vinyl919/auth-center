@@ -10,23 +10,27 @@ class DnType extends AbstractType{
 	
 	public function buildForm(FormBuilderInterface $builder, array $options){
 		$builder
+		->add('caName', 'text', array('label'=>'Nazwa Twojego CA'))
+		->add('caPassword', 'repeated',  array(
+				'type'=>'password',
+				'invalid_message'=>'Podane hasła różnią się',
+				'first_options'=>array('label'=>'Hasło zabezpieczające'),
+				'second_options'=>array('label'=>'Powtórz hasło')
+		))
 		->add('countryName','choice',  array(
-				'label'=>'Country Name',
+				'label'=>'Kraj',
 				'choice_list'=> new ChoiceList(array(
-								'PL','EN'
-						),
+						'PL','EN'),
 						array(
-								'PL','EN'
-						)
-						)
-				))
-		->add('stateOrProvinceName','text',  array('label'=>'State or province name'))
-		->add('localityName','text',  array('label'=>'Locality Name'))
-		->add('organisationName','text',  array('label'=>'Organisation name'))
-		->add('organisationUnitName','text',  array('label'=>'Organisation unit name'))
-		->add('commonName', 'text', array('label'=>'Common name'))
-		->add('emailAddress', 'email', array('label'=>'Email address'))
-		->add('send', 'submit', array('attr'=>array('class'=>'btn btn-default')));
+								'PL','EN'))
+		))
+		->add('stateOrProvinceName','text',  array('label'=>'Województwo lub stan'))
+		->add('localityName','text',  array('label'=>'Miasto'))
+		->add('organisationName','text',  array('label'=>'Nazwa organizacji'))
+		->add('organisationUnitName','text',  array('label'=>'Nazwa jednostki'))
+		->add('commonName', 'text', array('label'=>'Domena'))
+		->add('emailAddress', 'email', array('label'=>'Adres e-mail'))			
+		->add('send', 'submit', array('attr'=>array('class'=>'btn btn-default'), 'label'=>'Utwórz mój własny CA!'));
 	}
 	
 	public function getName(){

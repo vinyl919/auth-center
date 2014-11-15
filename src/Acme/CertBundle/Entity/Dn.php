@@ -9,6 +9,8 @@ class Dn {
 	protected $organisationUnitName;
 	protected $commonName;
 	protected $emailAddress;
+	protected $caName;
+	protected $caPassword;
 	
 	public function getCountryName(){
 		return  $this->countryName;
@@ -32,6 +34,13 @@ class Dn {
 		return  $this->emailAddress;
 	}
 	
+	public function getCaName(){
+		return  $this->caName;
+	}
+	public function getCaPassword(){
+		return  $this->caPassword;
+	}
+	
 	public function setCountryName($countryName){
 		$this->countryName = $countryName;
 	}
@@ -52,6 +61,13 @@ class Dn {
 	}
 	public function setEmailAddress($emailAddress){
 		$this->emailAddress = $emailAddress;
+	}
+	
+	public function setCaName($caName){
+		$this->caName = $caName;
+	}
+	public function setCaPassword($caPassword){
+		$this->caPassword = $caPassword;
 	}
 	
 }

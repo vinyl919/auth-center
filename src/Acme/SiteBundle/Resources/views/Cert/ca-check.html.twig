@@ -1,0 +1,7 @@
+{% if caInfo == false %}
+<p>Wygląda na to, że nie masz jeszcze włąsnego Root CA :c</p>
+<p>Utworzenie zajmie Ci dosłownie minutkę!</p>
+<a href="{{ url('acme_cert_ca_new') }}" alt="Twój własny Root CA"><button type="button" class="btn btn-default">Twój własny Root CA</button></a>
+{% else %}
+<p>posiadasz juz własny Root CA</p>
+{% endif %}

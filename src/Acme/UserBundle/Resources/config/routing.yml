@@ -19,6 +19,6 @@ xxx:
 
 ## ======================== ##
 
-acme_user_main_page:
-    path:    /app/account
+acme_user_panel:
+    path:    /app/panel
     defaults: { _controller: AcmeUserBundle:Account:index }
