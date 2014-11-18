@@ -1,8 +1,21 @@
 body, html {
 	width: 100%;
+	height: 100%;
 	margin: 0;
 	padding: 0;
 
+}
+
+.wrapper{
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -20em;
+}
+
+#footer, .push{
+	height: 10em;
+	clear: both;
 }
 
 #menu{
@@ -20,11 +33,10 @@ body, html {
 }
 
 #footer{
+	padding: 1.8em;
 	width: 100%;
 	background-color: #333;
-	padding: 30px;
 	color: #fff;
-	margin-top: 20px;
 }
 
 #copyrights{
@@ -113,3 +125,4 @@ body, html {
 .error-message{
 	color: #f13030;
 }
+
