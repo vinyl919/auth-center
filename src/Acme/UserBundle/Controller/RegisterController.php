@@ -6,7 +6,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Acme\StoreBundle\Entity\User;
+use Acme\UserBundle\Entity\User;
 use Acme\FormBundle\Form\Type\RegisterType;
 use Doctrine\ORM\EntityManager;
 
@@ -31,6 +31,6 @@ class RegisterController extends Controller {
 		}
 		
 		//return new Response('Dodano usera: '.$user->getUsername());
-		return $this->render('AcmeUserBundle:User:register.html.twig', array('form'=>$form->createView()));
+		return $this->render('AcmeSiteBundle:Panel:login_register.html.twig', array('form'=>$form->createView()));
 	}
 }

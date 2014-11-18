@@ -20,4 +20,8 @@ class DefaultController extends Controller
     	return $this->render('AcmeSiteBundle:Default:base.html.twig', array('title'=>'Auth-Center.pl'));
     }
     
+    public function loginRegisterAction(){
+    	return $this->render('AcmeSiteBundle:Panel:login_register.html.twig');
+    }
+    
 }

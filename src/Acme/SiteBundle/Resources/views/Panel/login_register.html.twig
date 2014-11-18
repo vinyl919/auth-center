@@ -1,0 +1,22 @@
+{% extends 'AcmeSiteBundle:Default:base.html.twig' %}
+	{% block body %}
+		<div class="login-register-container">
+			<div class="login-form">
+			<h1>Logowanie</h1>
+				<div class="control-group">
+					{{ render(controller('AcmeUserBundle:Login:login')) }}
+				</div>
+			</div>
+			<div class="register-form">
+			<h1>Rejestracja</h1>
+				{% block rgister %}
+					<div class="control-group">
+						{% form_theme form 'AcmeFormBundle:Default:default-form.html.twig' %}
+						{{ form_start(form, { 'attr' : { 'class' : 'test' } } ) }}
+						{{ form_end(form) }}
+					</div>
+				{% endblock %}
+			</div>
+			<div class="clear"></div>
+		</div>
+	{% endblock %}

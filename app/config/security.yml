@@ -1,7 +1,7 @@
 security:
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
-        Acme\StoreBundle\Entity\User: sha512
+        Acme\UserBundle\Entity\User: sha512
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
@@ -9,7 +9,7 @@ security:
 
     providers:
         default_provider: 
-                    entity: { class: AcmeStoreBundle:User, property: username }
+                    entity: { class: AcmeUserBundle:User, property: username }
 
     firewalls: 
 

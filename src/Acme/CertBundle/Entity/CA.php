@@ -1,5 +1,5 @@
 <?php
-namespace Acme\StoreBundle\Entity;
+namespace Acme\CertBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

@@ -4,7 +4,7 @@ namespace Acme\CertBundle\Controller;
 
 use Symfony\Component\BrowserKit\Response;
 
-use Acme\StoreBundle\Entity\CA;
+use Acme\CertBundle\Entity\CA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Acme\FormBundle\Form\Type\DnType;
@@ -45,7 +45,7 @@ class RootCaController extends Controller{
 	
 	public function getRootCaFromDb(){
 		$rootCaInfo = $this->getDoctrine()
-		->getRepository('AcmeStoreBundle:CA')
+		->getRepository('AcmeCertBundle:CA')
 		->findOneByUserId(1);
 		return $rootCaInfo;
 	}

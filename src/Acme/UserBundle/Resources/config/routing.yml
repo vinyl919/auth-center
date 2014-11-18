@@ -8,7 +8,8 @@ login_check:
 
 acme_user_login:
     path:     /app/login
-    defaults: { _controller: AcmeUserBundle:Login:login }
+    #defaults: { _controller: AcmeSiteBundle:Default:loginRegister }
+    defaults: { _controller: AcmeUserBundle:Register:register }
 
 logout:
     pattern: /app/logout

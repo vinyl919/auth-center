@@ -18,7 +18,7 @@ class RegisterType extends AbstractType{
 				'second_options'=>array('label'=>'Repeat password')
 				))
 		->add('email', 'email')
-		->add('register', 'submit');
+		->add('register', 'submit', array('attr'=>array('class'=>'btn btn-default submit')));
 	}
 	
 	public function getName(){
@@ -27,7 +27,7 @@ class RegisterType extends AbstractType{
 	
 	public function setDefaultOptions(OptionsResolverInterface $resolver){
 		$resolver->setDefaults(array(
-				'data_class'=>'Acme\StoreBundle\Entity\User'
+				'data_class'=>'Acme\UserBundle\Entity\User'
 				));
 	}
 }

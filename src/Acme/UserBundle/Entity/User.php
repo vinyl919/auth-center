@@ -1,5 +1,5 @@
 <?php
-namespace Acme\StoreBundle\Entity;
+namespace Acme\UserBundle\Entity;
 
 use Symfony\Component\Security\Tests\Core\Encoder\PasswordEncoder;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\ Entity
  * @ORM\ Table(name="user")
- * @UniqueEntity(fields="username", message="Username already taken")
- * @UniqueEntity(fields="email", message="Email already taken")
+ * @UniqueEntity(fields="username", message="Podana nazwa użytkownika jest już zajęta.")
+ * @UniqueEntity(fields="email", message="Na podany adres e-mail jest już zarejestrowane konto.")
  * @author xxx
  *
  */
