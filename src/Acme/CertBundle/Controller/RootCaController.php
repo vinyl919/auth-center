@@ -3,7 +3,7 @@
 namespace Acme\CertBundle\Controller;
 
 use Symfony\Component\BrowserKit\Response;
-
+use Acme\CertBundle\Certificates\Certificate;
 use Acme\CertBundle\Entity\CA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,10 +22,12 @@ class RootCaController extends Controller{
 			if($form->isValid()){
 				$userId = $this->getUser()->getId();
 				//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$userId));
+				$storeDn = new Certificate($dn);
+				$pkey = $storeDn->getNewPrivKey();
 				$storeDn = new CA();
-				$storeDn->setCAName('Pierwszy ca')
+				$storeDn->setCAName($dn->getCaName())
 						->setUSERId($userId)
-						->setCAPrivKey('priv key')
+						->setCAPrivKey($pkey)
 						->setCACert('CA CERT');
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($storeDn);
