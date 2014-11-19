@@ -21,9 +21,16 @@
 <div id="menu" class="navbar-static-top">
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="navbar-top-menu">
-		<div class="navbar-header navbar-right">
-					<div>
-							{{ render(controller('AcmeSiteBundle:Islogged:login_check')) }}
+			{% if app.user != null %}
+			<div class="navbar-header navbar-right">
+					<div class="menu-btn">
+						<a href="{{ url('logout') }}"><button type="button" class="btn btn-default navbar-btn">Wyloguj</button></a>
+					</div>
+			</div>
+			{% endif %}
+			<div class="navbar-header navbar-right">
+					<div class="menu-btn">
+						{{ render(controller('AcmeSiteBundle:Islogged:login_check')) }}
 					</div>
 			</div>
 			<div class="container-fluid navbar-left">
@@ -59,7 +66,9 @@
 			<li><a href="#">Konto</a></li>
 			<li><a href="#">Konto</a></li>
 		</ul>
-		{% block footer %}{% endblock %}
+		{% block footer %}
+
+		{% endblock %}
 	</div>
 <div class="clear"></div>
 </div>
