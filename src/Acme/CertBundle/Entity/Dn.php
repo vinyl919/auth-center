@@ -41,6 +41,7 @@ class Dn {
 		return  $this->caPassword;
 	}
 	
+	
 	public function setCountryName($countryName){
 		$this->countryName = $countryName;
 	}
@@ -69,5 +70,6 @@ class Dn {
 	public function setCaPassword($caPassword){
 		$this->caPassword = $caPassword;
 	}
+
 	
 }

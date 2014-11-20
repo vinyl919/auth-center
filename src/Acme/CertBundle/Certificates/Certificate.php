@@ -1,10 +1,19 @@
 <?php 
 namespace Acme\CertBundle\Certificates;
-use Acme\CertBundle\Entity\Dn;
+
+use Doctrine\ORM\EntityNotFoundException;
+	use Acme\CertBundle\Entity\Dn;
 use Acme\FormBundle\Form\Type\DnType;
 
 
 class Certificate {
+	
+	protected $iv = '78495147';
+	protected $newPrivKey;
+	protected $cert;
+	
+	public $caName;
+	public $caPassword;
 	
 	public $defaultConfig = array(
 			'digest_alg' => 'sha1',
@@ -12,7 +21,7 @@ class Certificate {
 			'encrypt_key_cipher' => OPENSSL_CIPHER_3DES,
 			'private_key_bits' => 4096
 	);
-	public $newPrivKey;
+	
 	public $dn = array(
 			'countryName'=>'',
 			'stateOrProvinceName'=>'',
@@ -23,9 +32,6 @@ class Certificate {
 			'emailAddress'=>'',
 	);
 	
-	public $caName;
-	public $caPassword;
-
 	
 	public function __construct(Dn $form){
 		$this->dn = array(
@@ -49,8 +55,31 @@ class Certificate {
 	
 	protected function exportNewPrivKey($key, $password){
 		openssl_pkey_export($key, $privKey, $password);
+		$this->newPrivKey = $privKey;
 		//openssl_pkey_export_to_file($key,__DIR__."/../ca.pem", $password);
-		return $privKey;
+		return $this->newPrivKey;
+	}
+	
+	public function encrypt($type){
+		if($type == 'key'){
+			return openssl_encrypt($this->newPrivKey, 'DES3', $this->caPassword, null, $this->iv);
+		} else if($type == 'cert'){
+			return openssl_encrypt($this->cert, 'DES3', $this->caPassword, null, $this->iv);
+		} else {
+			die ('Bledny wybor typu danych');
+			
+		}
+		
+		
+	}
+	
+	public function decrypt($data, $password){
+		return openssl_decrypt($data, 'DES3', $password, null, $this->iv);
+	}
+	
+	public function getNewCsr(){
+		$newCsr = openssl_csr_new($this->dn, $this->newPrivKey);
+		return $newCsr;
 	}
 	
 	/*
@@ -78,10 +107,7 @@ class Certificate {
 	return false;
 	}
 	}
-	public function getNewCsr(){
-	$newCsr = openssl_csr_new($this->dn, $this->newPrivKey);
-	return $newCsr;
-	}
+	
 	*/
 	
 }

@@ -1,7 +1,4 @@
 acme_site_homepage:
-    path:     /main
-    defaults: { _controller: AcmeSiteBundle:Default:index }
-acme_site_homepage:
     path:     /
     defaults: { _controller: AcmeSiteBundle:Default:index }
 user_area_login_check:

@@ -13,6 +13,8 @@ use Acme\CertBundle\Entity\Dn;
 
 class RootCaController extends Controller{
 	
+	private $iv = 72653415;
+	
 	public function newAction(Request $request){
 		if ($this->getRootCaFromDb() == false){
 			$dn = new Dn;
@@ -22,13 +24,16 @@ class RootCaController extends Controller{
 			if($form->isValid()){
 				$userId = $this->getUser()->getId();
 				//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$userId));
-				$storeDn = new Certificate($dn);
-				$pkey = $storeDn->getNewPrivKey();
+				$storeCertData = new Certificate($dn);
+				$storeCertData->getNewPrivKey();
+				//$encryptedPkey = openssl_encrypt( $pkey, 'DES3', $dn->getCaPassword(), null, $this->iv );
+				//$decrypted = openssl_decrypt($pkey, 'DES3', $dn->getCaPassword(), null, $this->iv);
 				$storeDn = new CA();
 				$storeDn->setCAName($dn->getCaName())
 						->setUSERId($userId)
-						->setCAPrivKey($pkey)
-						->setCACert('CA CERT');
+						->setCAPrivKey($storeCertData->encrypt('key'))
+						->setCACert('xxx')
+						->setDate(new \DateTime(date('Y-m-d')));
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($storeDn);
 				try {
@@ -36,7 +41,7 @@ class RootCaController extends Controller{
 				} catch (PDOException $e){
 				return new Response($e);
 				}
-				return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Dn form'));
+				return $this->redirect($this->generateUrl('xxx'));
 			}
 		
 		return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Dn form'));

@@ -40,6 +40,11 @@ class CA {
 	 * @ORM\ Column(type="string")
 	 */
 	protected $caName;
+	
+	/**
+	 * @ORM\ Column(type="date")
+	 */
+	protected $date;
 
 
     /**
@@ -142,5 +147,29 @@ class CA {
     public function getCaName()
     {
         return $this->caName;
+    }
+    
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return CA
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }

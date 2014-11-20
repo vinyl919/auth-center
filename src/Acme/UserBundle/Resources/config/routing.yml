@@ -1,5 +1,5 @@
 acme_user_register:
-    path:     /app/register
+    path:     ^/app/register
     defaults: { _controller: AcmeUserBundle:Register:register }
 
 ## STREFA LOGOWANIA ##
@@ -13,10 +13,6 @@ acme_user_login:
 
 logout:
     pattern: /app/logout
-
-xxx:
-    path:    /app/
-    defaults: { _controller: AcmeSiteBundle:Default:index }
 
 ## ======================== ##
 
