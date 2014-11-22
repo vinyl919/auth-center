@@ -1,0 +1,6 @@
+{% extends 'AcmeSiteBundle:Default:base.html.twig' %}
+{% block body %}
+	<p>Twój Root CA jest gotowy do pobrania:</p>
+	<p>{{ dump(cert) }}</p>
+	<p>{{ dump(decrypted) }}</p>
+{% endblock %}

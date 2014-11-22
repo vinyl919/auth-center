@@ -11,12 +11,14 @@ class Certificate {
 	protected $iv = '78495147';
 	protected $newPrivKey;
 	protected $cert;
+	protected $signedCert;
+	protected $method = 'DES3';
 	
 	public $caName;
 	public $caPassword;
 	
 	public $defaultConfig = array(
-			'digest_alg' => 'sha1',
+			'digest_alg' => 'sha512',
 			'config' => '/etc/ssl/openssl.cnf',
 			'encrypt_key_cipher' => OPENSSL_CIPHER_3DES,
 			'private_key_bits' => 4096
@@ -50,11 +52,11 @@ class Certificate {
 	
 	public function getNewPrivKey(){
 		$newPrivKey = openssl_pkey_new($this->defaultConfig);
-		return $this->exportNewPrivKey($newPrivKey, $this->caPassword);
+		return $this->exportNewPrivKey($newPrivKey);
 	}
 	
-	protected function exportNewPrivKey($key, $password){
-		openssl_pkey_export($key, $privKey, $password);
+	protected function exportNewPrivKey($key){
+		openssl_pkey_export($key, $privKey, $this->caPassword);
 		$this->newPrivKey = $privKey;
 		//openssl_pkey_export_to_file($key,__DIR__."/../ca.pem", $password);
 		return $this->newPrivKey;
@@ -62,24 +64,43 @@ class Certificate {
 	
 	public function encrypt($type){
 		if($type == 'key'){
-			return openssl_encrypt($this->newPrivKey, 'DES3', $this->caPassword, null, $this->iv);
+			return openssl_encrypt($this->newPrivKey, $this->method, $this->caPassword, null, $this->iv);
 		} else if($type == 'cert'){
-			return openssl_encrypt($this->cert, 'DES3', $this->caPassword, null, $this->iv);
+			return openssl_encrypt($this->signedCert, $this->method, $this->caPassword, null, $this->iv);
 		} else {
 			die ('Bledny wybor typu danych');
 			
 		}
-		
-		
 	}
 	
+	
 	public function decrypt($data, $password){
-		return openssl_decrypt($data, 'DES3', $password, null, $this->iv);
+		return $decrypted = openssl_decrypt($data, $this->method, $password, null, $this->iv);
+		//die($data.' ==================== '.openssl_error_string());
 	}
 	
 	public function getNewCsr(){
 		$newCsr = openssl_csr_new($this->dn, $this->newPrivKey);
+		//die($newCsr);
 		return $newCsr;
+	}
+	
+	public function singCert($csr, $caCert, $caKey, $days, $config, $id){
+		$signedCert = openssl_csr_sign($csr, $caCert, $caKey, $days, $config, $id);
+		openssl_x509_export($signedCert, $certificate);
+		$this->signedCert = $certificate;
+	}
+	
+	public function selfSignedCert($days){
+		//die($this->newPrivKey);
+		$privKey = array($this->newPrivKey, $this->caPassword);
+		$signedCert = $this->singCert($this->getNewCsr(), null, $privKey, $days, $this->defaultConfig, 1);
+		//die ($signedCert);
+		//return $this->signedCert;
+	}
+	
+	public function getSignedCert(){
+		return $this->signedCert;
 	}
 	
 	/*
@@ -111,7 +132,6 @@ class Certificate {
 	*/
 	
 }
-
 
 
 
