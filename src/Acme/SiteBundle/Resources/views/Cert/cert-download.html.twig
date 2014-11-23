@@ -2,5 +2,6 @@
 {% block body %}
 	<p>Twój Root CA jest gotowy do pobrania:</p>
 	<p>{{ dump(cert) }}</p>
+	<a href="{{ cert }}">Root CA</a>
 	<p>{{ dump(decrypted) }}</p>
 {% endblock %}

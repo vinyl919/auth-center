@@ -2,7 +2,8 @@
 
 namespace Acme\CertBundle\Controller;
 
-use Symfony\Component\BrowserKit\Response;
+//use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Acme\CertBundle\Certificates\CertificateManage;
 use Acme\CertBundle\Certificates\Certificate;
 use Acme\CertBundle\Entity\CA;
@@ -11,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Acme\FormBundle\Form\Type\DnType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Acme\CertBundle\Entity\Dn;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class RootCaController extends Controller{
 	
@@ -71,7 +74,30 @@ class RootCaController extends Controller{
 	public function getCaFromDbAction(){
 		$data = $this->getRootCaFromDb();
 		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), '111');
-		return $this->render('AcmeSiteBundle:Cert:cert-download.html.twig', array('cert'=>$caCert->getCert(), 'decrypted'=>$caCert->getPrivKey()));
+		$path = $caCert->exportToFile('cert', '111', $this->getUser()->getId());
+		//return $this->render('AcmeSiteBundle:Cert:cert-download.html.twig', array('cert'=>$path, 'decrypted'=>$caCert->getPrivKey()));
+		
+		return $this->fileDownload('ca.cer');
+		
+	}
+	
+	public function fileDownload($filename){
+		$basepath = WEB_DIRECTORY.'/tmp/cert/'.$this->getUser()->getId().'/'.$filename;
+		
+		if(!file_exists($basepath)){
+			throw $this->createNotFoundException($basepath);
+		}
+		
+		$response = new BinaryFileResponse($basepath);
+		$response->trustXSendfileTypeHeader();
+		$response->setContentDisposition(
+				ResponseHeaderBag::DISPOSITION_INLINE,
+				$filename,
+				iconv('UTF-8', 'ASCII//TRANSLIT', $filename));
+		$response->prepare(Request::createFromGlobals());
+		//$response->send();
+			
+		return $response;
 	}
 }
 

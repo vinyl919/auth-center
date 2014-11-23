@@ -21,7 +21,7 @@ class IsloggedController extends Controller {
 		} else {
 			return $this->render('AcmeSiteBundle:Default:is-logged.html.twig', array(
 					'path'=>$this->generateUrl('acme_user_panel'), 
-					'token'=>$token, 'action'=>'Panel konronly'
+					'token'=>$token, 'action'=>'Panel administracyjny'
 					));
 		}
 	}
