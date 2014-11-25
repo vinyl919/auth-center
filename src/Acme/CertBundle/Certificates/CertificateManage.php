@@ -9,8 +9,14 @@ class CertificateManage extends Certificate{
 	protected $cert;
 	
 	public function __construct($key, $cert, $password){
+		//die ($cert);
 		$this->privKey = parent::decrypt($key, $password);
 		$this->cert = parent::decrypt($cert, $password);
+// 		$e='';
+// 		while(openssl_error_string()){
+// 			$e.=openssl_error_string().'<br />';
+// 		}
+		
 	}
 	
 	public function getPrivKey(){
