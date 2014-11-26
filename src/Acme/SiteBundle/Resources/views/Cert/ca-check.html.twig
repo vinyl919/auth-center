@@ -1,8 +1,11 @@
 {% if caInfo == false %}
-<p>Wygląda na to, że nie masz jeszcze włąsnego Root CA :c</p>
+<p>Wygląda na to, że nie masz jeszcze włąsnego Root CA :(</p>
 <p>Utworzenie zajmie Ci dosłownie minutkę!</p>
 <a href="{{ url('acme_cert_ca_new') }}" alt="Twój własny Root CA"><button type="button" class="btn btn-default">Twój własny Root CA</button></a>
 {% else %}
 <p>Super! Posiadasz juz własny <a href="{{ url('acme_cert_download') }}" title="Kliknij aby pobrać" alt="Kliknij aby pobrać">Root CA</a></p>
+	{% if error is defined %}
+		{{ error }}
+	{% endif %}
 <p>Teraz możesz teraz podpisywać własne certyfkaty.</p>
 {% endif %}

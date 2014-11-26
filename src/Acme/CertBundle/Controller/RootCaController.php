@@ -3,7 +3,9 @@
 namespace Acme\CertBundle\Controller;
 
 //use Symfony\Component\BrowserKit\Response;
+use Acme\FormBundle\Form\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Response;
+use Acme\FormBundle\Entity\Password;
 use Acme\CertBundle\Certificates\CertificateManage;
 use Acme\CertBundle\Certificates\Certificate;
 use Acme\CertBundle\Entity\CA;
@@ -71,11 +73,45 @@ class RootCaController extends Controller{
 		return $this->render('AcmeSiteBundle:Cert:ca-check.html.twig', array('caInfo'=>$ca));
 	}
 	
-	public function getCaFromDbAction(){
+	public function isDecoded($caCert){
+		if($caCert->getCert() == false || $caCert->getPrivKey() == false){
+			return null;
+		} else {
+			return true;
+		}
+	}
+	
+	public function getCertListAction(Request $request, $error = null){
+
+		$password = new Password();
+		
+		$form = $this->createForm(new PasswordType(), $password);
+		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$form->createView()));
+		$form->handleRequest($request);	
+		if($form->isValid()){
+			$passwordCheck = $this->getCaFromDbAction(true, $password->getPassword());
+			if($passwordCheck == false){
+				return $this->render('AcmeSiteBundle:Panel:cert-download.html.twig', array('passwdForm'=>$form->createView(), 'error'=>'Błędne hasło'));
+			}
+			return $passwordCheck;
+		}
+		return $this->render('AcmeSiteBundle:Panel:cert-download.html.twig', array('passwdForm'=>$form->createView(), 'error'=>$error));
+	}
+	
+	public function getCaFromDbAction($download, $password){
+		if($download == false){
+			return false;
+		}
 		$data = $this->getRootCaFromDb();
 	//	die(dump($data)); 
-		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), '123');
-		$path = $caCert->exportToFile('cert', '123', $this->getUser()->getId());
+		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
+		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$caCert));
+		$decoded = $this->isDecoded($caCert);
+		if($decoded == false){
+			return false;
+		}
+		
+		$path = $caCert->exportToFile('cert', $password, $this->getUser()->getId());
 		//return $this->render('AcmeSiteBundle:Cert:cert-download.html.twig', array('cert'=>$path, 'decrypted'=>$caCert->getPrivKey()));
 		
 		//return $this->fileDownload('ca.cer');
@@ -97,6 +133,7 @@ class RootCaController extends Controller{
 		$response->setContent(readfile($filename));
 		return $response;
 	}
+
 }
 
 

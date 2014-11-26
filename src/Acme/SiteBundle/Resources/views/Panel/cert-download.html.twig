@@ -1,0 +1,16 @@
+{% extends 'AcmeSiteBundle:Default:base.html.twig' %}
+{% block body %}
+	<p>Twoje certyfikaty są gotowe do pobrania!</p>
+	<div class="form-default">	
+	<p><h2>Root CA</h2>
+		{% if error is defined %}
+			<div class="error-message">
+				{{ error }}
+			</div>
+		{% endif %}
+		
+		{% form_theme passwdForm 'AcmeFormBundle:Default:default-form.html.twig' %}
+			{{ form(passwdForm) }}
+	</p>
+	</div>
+{% endblock %}

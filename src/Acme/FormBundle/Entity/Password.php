@@ -2,8 +2,9 @@
 namespace Acme\FormBundle\Entity;
 
 class Password{
-	protected $password;
 	
+	protected $password;
+              	
 	public function setPassword($password){
 		$this->password = $password;
 	}
