@@ -74,14 +74,13 @@ class RootCaController extends Controller{
 	public function getCaFromDbAction(){
 		$data = $this->getRootCaFromDb();
 	//	die(dump($data)); 
-		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), '111');
-		$path = $caCert->exportToFile('cert', '111', $this->getUser()->getId());
+		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), '123');
+		$path = $caCert->exportToFile('cert', '123', $this->getUser()->getId());
 		//return $this->render('AcmeSiteBundle:Cert:cert-download.html.twig', array('cert'=>$path, 'decrypted'=>$caCert->getPrivKey()));
 		
 		//return $this->fileDownload('ca.cer');
 		$filename = WEB_DIRECTORY.'/tmp/cert/'.$this->getUser()->getId().'/ca.cer';
 		return $this->fileDownload($filename);
-		
 	}
 	
 	public function fileDownload($filename){
