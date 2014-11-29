@@ -63,6 +63,7 @@ class Certificate {
 	}
 	
 	public function encrypt($type){
+		//die($this->caPassword);
 		if($type == 'key'){
 			return openssl_encrypt($this->newPrivKey, $this->method, $this->caPassword, null, $this->iv);
 		} else if($type == 'cert'){
@@ -75,7 +76,9 @@ class Certificate {
 	
 	
 	public function decrypt($data, $password){
-		return $decrypted = openssl_decrypt($data, $this->method, $password, null, $this->iv);
+		$decrypted = openssl_decrypt($data, $this->method, $password, null, $this->iv);
+		//die($data.'<br />'.$password.'<br />'.$this->iv);
+		return $decrypted;
 		//die($data.' ==================== '.openssl_error_string());
 	}
 	

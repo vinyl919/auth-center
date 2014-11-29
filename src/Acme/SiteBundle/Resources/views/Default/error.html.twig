@@ -1,1 +1,5 @@
-<p>{{ error }}</p>
+{% extends 'AcmeSiteBundle:Default:base.html.twig' %}
+	{% block body %}
+		<h1>Oops! Coś poszło nie tak :(</h1>
+		<p>{{ error }}</p>
+	{% endblock %}

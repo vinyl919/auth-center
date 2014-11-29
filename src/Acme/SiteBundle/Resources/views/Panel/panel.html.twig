@@ -2,4 +2,12 @@
 {% block body %}
 <p>Witaj: {{ app.user.username }}!</p>
 {{ render(controller('AcmeCertBundle:RootCa:getCaInfo')) }}
+<div class="tablet-content">
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy afasf asf asf aasdfas', 'color': '#666', 'href': url('acme_cert_download')}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'color': '#777', 'href': '#'}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'color': '#666', 'href': '#'}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy afasf asf asf aasdfas', 'color': '#666', 'href': url('acme_cert_download')}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'color': '#777', 'href': '#'}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'color': '#666', 'href': '#'}) }}
+</div>
 {% endblock %}

@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class RootCaController extends Controller{
 	
-	private $iv = 72653415;
+	//private $iv = 72653415;
 	
 	public function newAction(Request $request){
 		if ($this->getRootCaFromDb() == false){
@@ -82,14 +82,18 @@ class RootCaController extends Controller{
 	}
 	
 	public function getCertListAction(Request $request, $error = null){
-
-		$password = new Password();
+		$test = $this->getRootCaFromDb();
+		if($test == null){
+			return $this->render('AcmeSiteBundle:Default:error.html.twig', array('error'=>'Brak certyfikatu ROOT.'));
+		}
 		
+		$password = new Password();
 		$form = $this->createForm(new PasswordType(), $password);
 		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$form->createView()));
 		$form->handleRequest($request);	
 		if($form->isValid()){
 			$passwordCheck = $this->getCaFromDbAction(true, $password->getPassword());
+			//die($password->getPassword());
 			if($passwordCheck == false){
 				return $this->render('AcmeSiteBundle:Panel:cert-download.html.twig', array('passwdForm'=>$form->createView(), 'error'=>'Błędne hasło'));
 			}
@@ -103,6 +107,7 @@ class RootCaController extends Controller{
 			return false;
 		}
 		$data = $this->getRootCaFromDb();
+
 	//	die(dump($data)); 
 		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
 		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$caCert));
