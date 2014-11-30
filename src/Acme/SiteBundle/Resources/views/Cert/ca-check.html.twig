@@ -1,11 +1,7 @@
 {% if caInfo == false %}
-<p>Wygląda na to, że nie masz jeszcze włąsnego Root CA :(</p>
-<p>Utworzenie zajmie Ci dosłownie minutkę!</p>
-<a href="{{ url('acme_cert_ca_new') }}" alt="Twój własny Root CA"><button type="button" class="btn btn-default">Twój własny Root CA</button></a>
-{% else %}
-<p>Super! Posiadasz juz własny <a href="{{ url('acme_cert_download') }}" title="Kliknij aby pobrać" alt="Kliknij aby pobrać">Root CA</a></p>
-	{% if error is defined %}
-		{{ error }}
-	{% endif %}
-<p>Teraz możesz teraz podpisywać własne certyfkaty.</p>
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Utwórz', 'description': 'utwórz pierwszy Root CA', 'color': '#666', 'href': url('acme_cert_ca_new') }) }}
+	{% else %}
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Podpisz nowy', 'description': 'utwórz nowy certyfikat klienta', 'color': '#666', 'href': url('user_area_root_ca_site')}) }}
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Pobierz', 'description': 'Twój ROOT CA', 'color': '#666', 'href': url('acme_cert_download', {'type': 'cert'})}) }}
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Pobierz', 'description': 'Klucz Twojego ROOT CA', 'color': '#666', 'href': url('acme_cert_download', {'type': 'key'})}) }}
 {% endif %}

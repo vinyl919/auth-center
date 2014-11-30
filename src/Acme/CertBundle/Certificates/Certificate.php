@@ -64,10 +64,11 @@ class Certificate {
 	
 	public function encrypt($type){
 		//die($this->caPassword);
+		$password = sha1($this->caPassword);
 		if($type == 'key'){
-			return openssl_encrypt($this->newPrivKey, $this->method, $this->caPassword, null, $this->iv);
+			return openssl_encrypt($this->newPrivKey, $this->method, $password, null, $this->iv);
 		} else if($type == 'cert'){
-			return openssl_encrypt($this->signedCert, $this->method, $this->caPassword, null, $this->iv);
+			return openssl_encrypt($this->signedCert, $this->method, $password, null, $this->iv);
 		} else {
 			die ('Bledny wybor typu danych');
 			
@@ -76,6 +77,7 @@ class Certificate {
 	
 	
 	public function decrypt($data, $password){
+		$password = sha1($password);
 		$decrypted = openssl_decrypt($data, $this->method, $password, null, $this->iv);
 		//die($data.'<br />'.$password.'<br />'.$this->iv);
 		return $decrypted;

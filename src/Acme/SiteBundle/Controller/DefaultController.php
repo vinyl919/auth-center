@@ -24,4 +24,7 @@ class DefaultController extends Controller
     	return $this->render('AcmeSiteBundle:Panel:login_register.html.twig');
     }
     
+    public function caSiteAction(){
+    	return $this->render('AcmeSiteBundle:Cert:root-ca-site.html.twig', array('title'=>'Twój Root CA'));
+    }
 }

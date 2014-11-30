@@ -2,5 +2,5 @@ acme_cert_ca_new:
     path: /app/panel/ca/new
     defaults: { _controller: AcmeCertBundle:RootCa:new }
 acme_cert_download:
-    path: /app/panel/ca/download{download}
-    defaults: { _controller: AcmeCertBundle:RootCa:getCertList, download:false }
+    path: /app/panel/ca/download/{type}
+    defaults: { _controller: AcmeCertBundle:RootCa:getCertList}

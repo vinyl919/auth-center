@@ -1,8 +1,16 @@
 {% extends 'AcmeSiteBundle:Default:base.html.twig' %}
 {% block body %}
-	<p>Twoje certyfikaty są gotowe do pobrania!</p>
-	<div class="form-default">	
-	<p><h2>Root CA</h2>
+<div class="form-default">	
+	{% if type == 'cert' %}
+	
+			<p>Twój certyfikat jest gotowy do pobrania!</p>
+			<p><h2>Root CA</h2>
+
+		{% elseif type == 'key' %}
+
+			<p>Klucz Twojego certyfikau jest gotowy do pobrania!</p>
+			<p><h2>Root CA Private Key</h2>
+	{% endif %}
 		{% if error is defined %}
 			<div class="error-message">
 				{{ error }}

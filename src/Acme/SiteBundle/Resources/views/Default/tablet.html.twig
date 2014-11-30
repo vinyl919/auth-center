@@ -1,7 +1,14 @@
 {% block tablet %}
 	<a href="{{ href }}">
 		<div class="tablet" style="background-color: {{ color }};" >
-			<p>{{ name }}</p>
+			<div class="tablet-center">
+				<p class="name">{{ name }}</p>
+				<p class='description'>
+					{% if description is defined %}
+						{{ description }}
+					{% endif %}
+				</p>
+			</div>
 		</div>
 	</a>
 {% endblock %}
