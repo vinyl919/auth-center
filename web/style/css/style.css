@@ -144,13 +144,16 @@ body, html {
 	width: 13em;
 	height: 13em;
 	float: left;
-	color: #fff;
+	color: #666;
 	margin: 1.8em;
 	-webkit-box-shadow: -2px 2px 5px 0px rgba(0, 0, 0, 0.45);
 	-moz-box-shadow:    -2px 2px 5px 0px rgba(0, 0, 0, 0.45);
 	box-shadow:         -2px 2px 5px 0px rgba(0, 0, 0, 0.45);
 	transition-duration: 300ms;
 	text-align: center;
+	background-color: #f5f5f5 !important;
+	border: 1px solid #ccc;
+	opacity: 0.8;
 }
 
 
@@ -163,11 +166,13 @@ body, html {
 }
 
 .tablet:hover{
-	opacity: 0.7;
+	opacity: 0.95;
 	-webkit-box-shadow: -6px 6px 5px 0px rgba(0, 0, 0, 0.75);
 	-moz-box-shadow:    -6px 6px 5px 0px rgba(0, 0, 0, 0.75);
 	box-shadow:         -6px 6px 5px 0px rgba(0, 0, 0, 0.75);
-	transition-duration: 300ms;
+	transition-duration: 500ms;
+	border: 1px solid #aaa;
+	color: #444;
 }
 
 .tablet .description{

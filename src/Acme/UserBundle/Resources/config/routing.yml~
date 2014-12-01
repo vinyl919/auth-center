@@ -17,5 +17,5 @@ logout:
 ## ======================== ##
 
 acme_user_panel:
-    path:    /app/panel
+    path:    /app/panel[*]
     defaults: { _controller: AcmeUserBundle:Account:index }
