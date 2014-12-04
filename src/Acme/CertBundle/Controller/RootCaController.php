@@ -31,7 +31,10 @@ class RootCaController extends Controller{
 				$userId = $this->getUser()->getId();
 				//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$userId));
 				$storeCertData = new Certificate($dn);
-				$storeCertData->getNewPrivKey();
+				$key1 = $storeCertData->getNewPrivKey();
+				
+				//$key = $storeCertData->getPrivKey();
+				//die($key1.'<br />'.$key);
 				//$encryptedPkey = openssl_encrypt( $pkey, 'DES3', $dn->getCaPassword(), null, $this->iv );
 				//$decrypted = openssl_decrypt($pkey, 'DES3', $dn->getCaPassword(), null, $this->iv);
 				$storeDn = new CA();
@@ -129,6 +132,9 @@ class RootCaController extends Controller{
 			
 			//return $this->fileDownload('ca.cer');
 			$filename = WEB_DIRECTORY.'/tmp/cert/'.$this->getUser()->getId().'/ca.pem';
+		}
+		else {
+			die('Błędny typ danych');
 		}
 		return $this->fileDownload($filename);
 	}

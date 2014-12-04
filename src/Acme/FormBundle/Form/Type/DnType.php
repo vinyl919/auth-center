@@ -10,7 +10,7 @@ class DnType extends AbstractType{
 	
 	public function buildForm(FormBuilderInterface $builder, array $options){
 		$builder
-		->add('caName', 'text', array('label'=>'Nazwa Twojego CA'))
+		->add('caName', 'text', array('label'=>'Nazwa Certyfikatu'))
 		->add('caPassword', 'repeated',  array(
 				'type'=>'password',
 				'invalid_message'=>'Podane hasła różnią się',
@@ -30,7 +30,7 @@ class DnType extends AbstractType{
 		->add('organisationUnitName','text',  array('label'=>'Nazwa jednostki'))
 		->add('commonName', 'text', array('label'=>'Domena'))
 		->add('emailAddress', 'email', array('label'=>'Adres e-mail'))			
-		->add('send', 'submit', array('attr'=>array('class'=>'btn btn-default'), 'label'=>'Utwórz mój własny CA!'));
+		->add('send', 'submit', array('attr'=>array('class'=>'btn btn-default submit'), 'label'=>'Utwórz Certyfikat'));
 	}
 	
 	public function getName(){

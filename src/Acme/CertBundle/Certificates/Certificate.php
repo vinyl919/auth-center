@@ -17,12 +17,14 @@ class Certificate {
 	public $caName;
 	public $caPassword;
 	
-	public $defaultConfig = array(
+	/*public $defaultConfig = array(
 			'digest_alg' => 'sha512',
 			'config' => '/etc/ssl/openssl.cnf',
 			'encrypt_key_cipher' => OPENSSL_CIPHER_3DES,
 			'private_key_bits' => 4096
-	);
+	);*/
+	
+	public $defaultConfig = null;
 	
 	public $dn = array(
 			'countryName'=>'',
@@ -55,17 +57,23 @@ class Certificate {
 		return $this->exportNewPrivKey($newPrivKey);
 	}
 	
-	protected function exportNewPrivKey($key){
+	public function exportNewPrivKey($key){
 		openssl_pkey_export($key, $privKey, $this->caPassword);
 		$this->newPrivKey = $privKey;
 		//openssl_pkey_export_to_file($key,__DIR__."/../ca.pem", $password);
 		return $this->newPrivKey;
 	}
 	
+	public function getPrivKey(){
+		return $this->exportNewPrivKey($this->newPrivKey);
+	}
+	
 	public function encrypt($type){
 		//die($this->caPassword);
 		$password = sha1($this->caPassword);
 		if($type == 'key'){
+			/* $error = var_dump($this->exportNewPrivKey($this->newPrivKey));
+			die($error); */
 			return openssl_encrypt($this->newPrivKey, $this->method, $password, null, $this->iv);
 		} else if($type == 'cert'){
 			return openssl_encrypt($this->signedCert, $this->method, $password, null, $this->iv);
@@ -104,6 +112,13 @@ class Certificate {
 		//return $this->signedCert;
 	}
 	
+	
+	public function newSignedCert($caCert, $caPrivKey, $password, $serial, $days = 365){
+		$caPrivKeyArray = array($caPrivKey, $password);
+		//$error = var_dump($password);
+		//die($error);
+		$this->singCert($this->getNewCsr(), $caCert, $caPrivKeyArray, $days, $this->defaultConfig, $serial);
+	}
 	public function getSignedCert(){
 		return $this->signedCert;
 	}

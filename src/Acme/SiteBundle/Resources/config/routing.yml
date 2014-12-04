@@ -7,3 +7,4 @@ user_area_login_check:
 user_area_root_ca_site:
     path: /app/panel/ca
     defaults: { _controller: AcmeSiteBundle:Default:caSite }
+
