@@ -9,7 +9,7 @@ use Acme\FormBundle\Form\Type\DnType;
 class Certificate {
 	
 	protected $iv = '78495147';
-	protected $newPrivKey;
+	protected $privateKey;
 	protected $cert;
 	protected $signedCert;
 	protected $method = 'DES3';
@@ -17,14 +17,14 @@ class Certificate {
 	public $caName;
 	public $caPassword;
 	
-	/*public $defaultConfig = array(
+	public $defaultConfig = array(
 			'digest_alg' => 'sha512',
 			'config' => '/etc/ssl/openssl.cnf',
 			'encrypt_key_cipher' => OPENSSL_CIPHER_3DES,
 			'private_key_bits' => 4096
-	);*/
+	);
 	
-	public $defaultConfig = null;
+	//public $defaultConfig = null;
 	
 	public $dn = array(
 			'countryName'=>'',
@@ -50,22 +50,22 @@ class Certificate {
 		
 		$this->caName = $form->getCaName();
 		$this->caPassword = $form->getCaName();
+		
+		$this->getNewPrivKey();
 	}
 	
 	public function getNewPrivKey(){
 		$newPrivKey = openssl_pkey_new($this->defaultConfig);
-		return $this->exportNewPrivKey($newPrivKey);
+		return $this->privateKey = array($this->exportNewPrivKey($newPrivKey), $this->caPassword);
 	}
 	
 	public function exportNewPrivKey($key){
-		openssl_pkey_export($key, $privKey, $this->caPassword);
-		$this->newPrivKey = $privKey;
-		//openssl_pkey_export_to_file($key,__DIR__."/../ca.pem", $password);
-		return $this->newPrivKey;
+		openssl_pkey_export($key, $out, $this->caPassword);
+		return $out;
 	}
 	
 	public function getPrivKey(){
-		return $this->exportNewPrivKey($this->newPrivKey);
+		return $this->exportNewPrivKey($this->pirvateKey);
 	}
 	
 	public function encrypt($type){
@@ -74,7 +74,7 @@ class Certificate {
 		if($type == 'key'){
 			/* $error = var_dump($this->exportNewPrivKey($this->newPrivKey));
 			die($error); */
-			return openssl_encrypt($this->newPrivKey, $this->method, $password, null, $this->iv);
+			return openssl_encrypt($this->privateKey[0], $this->method, $password, null, $this->iv);
 		} else if($type == 'cert'){
 			return openssl_encrypt($this->signedCert, $this->method, $password, null, $this->iv);
 		} else {
@@ -93,7 +93,7 @@ class Certificate {
 	}
 	
 	public function getNewCsr(){
-		$newCsr = openssl_csr_new($this->dn, $this->newPrivKey);
+		$newCsr = openssl_csr_new($this->dn, $this->privateKey);
 		//die($newCsr);
 		return $newCsr;
 	}
@@ -106,7 +106,7 @@ class Certificate {
 	
 	public function selfSignedCert($days){
 		//die($this->newPrivKey);
-		$privKey = array($this->newPrivKey, $this->caPassword);
+		$privKey = $this->privateKey;
 		$signedCert = $this->singCert($this->getNewCsr(), null, $privKey, $days, $this->defaultConfig, 1);
 		//die ($signedCert);
 		//return $this->signedCert;

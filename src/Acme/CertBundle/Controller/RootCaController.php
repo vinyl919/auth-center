@@ -32,6 +32,7 @@ class RootCaController extends Controller{
 				//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$userId));
 				$storeCertData = new Certificate($dn);
 				$key1 = $storeCertData->getNewPrivKey();
+				$storeCertData->selfSignedCert('365');
 				
 				//$key = $storeCertData->getPrivKey();
 				//die($key1.'<br />'.$key);
@@ -41,7 +42,6 @@ class RootCaController extends Controller{
 				$storeDn->setCAName($dn->getCaName())
 						->setUSERId($userId)
 						->setCAPrivKey($storeCertData->encrypt('key'));
-				$storeCertData->selfSignedCert('365');
 				$storeDn ->setCACert($storeCertData->encrypt('cert'))
 						 ->setDate(new \DateTime(date('Y-m-d')));
 				$em = $this->getDoctrine()->getManager();

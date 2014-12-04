@@ -41,8 +41,8 @@ class ClientCertController extends RootCaController{
 			$userId = $this->getUser()->getId();
 			$clientCert = new Certificate($dn);
 			$clientCert->getNewPrivKey();
-			$clientCert->newSignedCert($caCert, $caPrivKey, 'xx', 1);
-			die($clientCert->getSignedCert());
+			$clientCert->newSignedCert($caCert, $caPrivKey, 'xxx', 1);
+			die('DZIALA!!!!');
 			
 
 		/*	$storeCertData = new Certificate($dn);
