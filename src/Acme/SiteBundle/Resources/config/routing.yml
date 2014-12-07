@@ -7,4 +7,6 @@ user_area_login_check:
 user_area_root_ca_site:
     path: /app/panel/ca
     defaults: { _controller: AcmeSiteBundle:Default:caSite }
-
+user_area_certs_site:
+    path: /app/panel/certs
+    defaults: { _controller: AcmeCertBundle:ClientCert:certsList }

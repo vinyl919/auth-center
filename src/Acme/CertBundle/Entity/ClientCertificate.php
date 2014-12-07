@@ -18,10 +18,15 @@ class ClientCertificate {
 	 */
 	protected $id;
 	/**
-	 * @ORM\ Column(type="integer", unique=true)
+	 * @ORM\ Column(type="integer")
 	 *
 	 */
 	protected $userId;
+	
+	/**
+	 * @ORM\ Column(type="integer")
+	 */
+	protected $caId;
 	
 	/**
 	 * @ORM\ Column(type="string")
@@ -169,5 +174,27 @@ class ClientCertificate {
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Set caId
+     *
+     * @return ClientCertificate
+     */
+    public function setCaId($caId)
+    {
+        $this->caId = $caId;
+
+        return $this;
+    }
+
+    /**
+     * Get caId
+     *
+     * @return \int 
+     */
+    public function getCaId()
+    {
+        return $this->caId;
     }
 }

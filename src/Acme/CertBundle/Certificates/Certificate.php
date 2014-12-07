@@ -56,7 +56,8 @@ class Certificate {
 	
 	public function getNewPrivKey(){
 		$newPrivKey = openssl_pkey_new($this->defaultConfig);
-		return $this->privateKey = array($this->exportNewPrivKey($newPrivKey), $this->caPassword);
+		//return 
+		$this->privateKey = array($this->exportNewPrivKey($newPrivKey), $this->caPassword);
 	}
 	
 	public function exportNewPrivKey($key){
@@ -65,7 +66,8 @@ class Certificate {
 	}
 	
 	public function getPrivKey(){
-		return $this->exportNewPrivKey($this->pirvateKey);
+
+		return $this->exportNewPrivKey($this->privateKey[0]);
 	}
 	
 	public function encrypt($type){

@@ -2,11 +2,11 @@
 {% block body %}
 <p>Witaj: {{ app.user.username }}!</p>
 <div class="tablet-container">
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Root CA', 'description': 'główny certyfikat', 'color': '#666', 'href': url('user_area_root_ca_site')}) }}
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'color': '#777', 'href': '#'}) }}
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'color': '#666', 'href': '#'}) }}
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy afasf asf asf aasdfas', 'color': '#666', 'href': '#'}) }}
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'color': '#777', 'href': '#'}) }}
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'color': '#666', 'href': '#'}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Root CA', 'description': 'główny certyfikat', 'href': url('user_area_root_ca_site')}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Certyfikaty', 'description': 'podpisane certyfikaty', 'href': url('user_area_certs_site')}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'href': url('user_area_certs_site')}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy afasf asf asf aasdfas', 'href': '#'}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'href': '#'}) }}
+	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'href': '#'}) }}
 </div>
 {% endblock %}
