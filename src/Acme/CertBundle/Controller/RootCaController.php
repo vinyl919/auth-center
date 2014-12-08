@@ -67,14 +67,14 @@ class RootCaController extends Controller{
 		return $rootCaInfo;
 	}
 	
-	public function getCaInfoAction(){
+	 public function getCaInfoAction(){
 		$rootCaInfo = $this->getRootCaFromDb();
 		$ca = false;
 		if($rootCaInfo){
 			$ca = true;
 		}
 		return $this->render('AcmeSiteBundle:Cert:ca-check.html.twig', array('caInfo'=>$ca));
-	}
+	} 
 	
 	public function isDecoded($caCert){
 		if($caCert->getCert() == false || $caCert->getPrivKey() == false){
@@ -84,13 +84,13 @@ class RootCaController extends Controller{
 		}
 	}
 	
-	public function getCertListAction(Request $request, $type){
+	public function getCertListAction(Request $request){
 		$error = null;
 		$test = $this->getRootCaFromDb();
 		if($test == null){
 			return $this->render('AcmeSiteBundle:Default:error.html.twig', array('error'=>'Brak certyfikatu ROOT.'));
 		}
-		
+		$type = 'cert';
 		$password = new Password();
 		$form = $this->createForm(new PasswordType(), $password);
 		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$form->createView()));
@@ -106,10 +106,20 @@ class RootCaController extends Controller{
 		return $this->render('AcmeSiteBundle:Panel:cert-download.html.twig', array('type'=>$type, 'passwdForm'=>$form->createView(), 'error'=>$error));
 	}
 	
-	public function getCaFromDbAction($download, $password, $type){
-		if($download == false){
+	public function passwordCheck($password){
+		$data = $this->getRootCaFromDb();
+		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
+		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$caCert));
+		$decoded = $this->isDecoded($caCert);
+		if($decoded == false){
 			return false;
+		} else {
+			return true;
 		}
+	}
+	
+	public function getCaFromDbAction($download, $password, $type){
+		
 		$data = $this->getRootCaFromDb();
 
 	//	die(dump($data)); 
@@ -117,6 +127,9 @@ class RootCaController extends Controller{
 		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$caCert));
 		$decoded = $this->isDecoded($caCert);
 		if($decoded == false){
+			return false;
+		}
+		if($download == false){
 			return false;
 		}
 		
@@ -137,7 +150,8 @@ class RootCaController extends Controller{
 			die('Błędny typ danych');
 		}
 		return $this->fileDownload($filename);
-	}
+	
+		}
 	
 	public function fileDownload($filename){
 		if(!file_exists($filename)){

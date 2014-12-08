@@ -26,14 +26,34 @@ class ClientCertController extends RootCaController{
 		$list = array();
 		
 		foreach($data as $key){
-			$list[]=array('id'=>$key->getId(), 'name'=>$key->getClientCertName(), 'date'=>$key->getDate()->date);
+			$list[]=array('id'=>$key->getId(), 'name'=>$key->getClientCertName(), 'date'=>$key->getDate());
 		}
 		$e = var_dump($data);
 		die($e);
+	} 
+	
+	
+	public function getCaForNewCertAction(Request $request){
+		
+			$password = new Password();
+			$form = $this->createForm(new PasswordType(), $password);
+			$form->handleRequest($request);
+			$rootCaPassword  = $password->getPassword();
+			if($form->isValid()){
+				$passwordCheck = parent::passwordCheck($rootCaPassword);
+				//die($password->getPassword());
+				if($passwordCheck == false){
+					return $this->render('AcmeSiteBundle:Form:password.html.twig', array('passwdForm'=>$form->createView(), 'error'=>'Błędne hasło'));
+				} 
+			//$passwordCheck = xxxxx;
+			//return $this->render('AcmeSiteBundle:Panel:cert-download.html.twig', array('type'=>$type, 'passwdForm'=>$form->createView(), 'error'=>$error));
+			//return $this->redirect($this->generateUrl('user_area_new_client_cert',array('password: '=>$rootCaPassword)));
+			return $this->forward('AcmeCertBundle:ClientCert:newSignedCert', array('password'=>$rootCaPassword));
+			}
+		return $this->render('AcmeSiteBundle:Form:password.html.twig', array('passwdForm'=>$form->createView()));
 	}
 	
-	
-	public function newSignedCertAction(Request $request){
+	public function newSignedCertAction(Request $request, $password = null){
 		
 		$dn = new Dn;
 		$form = $this->createForm(new DnType(), $dn);
@@ -44,7 +64,7 @@ class ClientCertController extends RootCaController{
 		if( $certData == false){
 			return $this->redirect($this->generateUrl('user_area_root_ca_site'));
 		}
-		$rootCa = new CertificateManage($certData->getCaPrivKey(), $certData->getCaCert(), $password = 'xxx');
+		$rootCa = new CertificateManage($certData->getCaPrivKey(), $certData->getCaCert(), $password);
 		$caCert = $rootCa->getCert();
 		$caPrivKey = $rootCa->getPrivKey();
 		$caId = $certData->getId();
@@ -64,7 +84,7 @@ class ClientCertController extends RootCaController{
 
 			
 			$clientCert->getNewPrivKey();
-			$clientCert->newSignedCert($caCert, $caPrivKey, 'xxx', 1);
+			$clientCert->newSignedCert($caCert, $caPrivKey, $password, 1);
 
 			$storeClientCert->setDate(new \DateTime(date('Y-m-d')))
 							->setClientCertName($dn->getCaName())
