@@ -1,0 +1,11 @@
+{% extends 'AcmeSiteBundle:Default:base.html.twig' %}
+{% block body %}
+	<div class="messages">
+		<h1>Sukces!</h1>
+		<h3>{{ message }}</h3>
+		<div class="tablet-container">
+			{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Start', 'description': 'strona główna', 'href': url('acme_site_homepage')}) }}
+			{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Panel', 'description': 'strona główna panelu administracyjnego', 'href': url('acme_user_panel')}) }}
+		<div class="tablet-container">
+	</div>
+{% endblock %}

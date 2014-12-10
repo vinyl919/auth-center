@@ -11,6 +11,15 @@ class Dn {
 	protected $emailAddress;
 	protected $caName;
 	protected $caPassword;
+	protected $rootCaPassword;
+	
+	public function getRootCaPassword(){
+		return $this->rootCaPassword;
+	}
+	
+	public function setRootCaPassword($rootCaPassword){
+		return $this->rootCaPassword = $rootCaPassword;
+	}
 	
 	public function getCountryName(){
 		return  $this->countryName;

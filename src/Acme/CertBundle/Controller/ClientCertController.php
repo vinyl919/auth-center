@@ -1,6 +1,8 @@
 <?php
 namespace Acme\CertBundle\Controller;
 
+use Symfony\Component\Form\FormError;
+
 use Acme\CertBundle\Controller\RootCaController;
 use Acme\FormBundle\Form\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,8 +30,9 @@ class ClientCertController extends RootCaController{
 		foreach($data as $key){
 			$list[]=array('id'=>$key->getId(), 'name'=>$key->getClientCertName(), 'date'=>$key->getDate());
 		}
-		$e = var_dump($data);
-		die($e);
+		//$e = var_dump($list);
+		
+		return $this->render('AcmeSiteBundle:Cert:cert-list.html.twig', array('data'=>$list));
 	} 
 	
 	
@@ -53,29 +56,31 @@ class ClientCertController extends RootCaController{
 		return $this->render('AcmeSiteBundle:Form:password.html.twig', array('passwdForm'=>$form->createView()));
 	}
 	
-	public function newSignedCertAction(Request $request, $password = null){
+	public function newSignedCertAction(Request $request){
 		
 		$dn = new Dn;
 		$form = $this->createForm(new DnType(), $dn);
+		//$form->remove('rootCaPassword');
 		$form->handleRequest($request);
-		
+		if($form->isValid()){
+			if($passwordCheck = parent::passwordCheck($dn->getRootCaPassword()) == false){
+				$form->addError(new FormError('Błędne hasło certyfikatu ROOT'));
+				return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Dane nowego certyfikatu'));
+				
+			}
 		$certData = parent::getRootCaFromDb();
 		
 		if( $certData == false){
 			return $this->redirect($this->generateUrl('user_area_root_ca_site'));
 		}
-		$rootCa = new CertificateManage($certData->getCaPrivKey(), $certData->getCaCert(), $password);
+		$rootCa = new CertificateManage($certData->getCaPrivKey(), $certData->getCaCert(), $dn->getRootCaPassword());
 		$caCert = $rootCa->getCert();
 		$caPrivKey = $rootCa->getPrivKey();
 		$caId = $certData->getId();
 		///$error = var_dump($caPrivKey);
 		//die('tu'.$caId);
 		
-		$dn = new Dn();
-		$form = $this->createForm(new DnType(), $dn);
-		$form->handleRequest($request);
 		
-		if($form->isValid()){
 			$storeClientCert = new ClientCertificate();
 			
 			$userId = $this->getUser()->getId();
@@ -84,7 +89,7 @@ class ClientCertController extends RootCaController{
 
 			
 			$clientCert->getNewPrivKey();
-			$clientCert->newSignedCert($caCert, $caPrivKey, $password, 1);
+			$clientCert->newSignedCert($caCert, $caPrivKey, $dn->getRootCaPassword(), 1);
 
 			$storeClientCert->setDate(new \DateTime(date('Y-m-d')))
 							->setClientCertName($dn->getCaName())
@@ -98,9 +103,11 @@ class ClientCertController extends RootCaController{
 			try {
 				$em->flush();
 			} catch (PDOException $e){
+				var_dump($e);
 				return new Response($e);
 			}
-			die('dodano do bazy');
+			
+			return $this->render('AcmeSiteBundle:Default:success-message.html.twig', array('message'=>'Nowy certyfikat został utworzony poprawnie'));
 
 		/*	$storeCertData = new Certificate($dn);
 			$storeCertData->getNewPrivKey();

@@ -9,8 +9,8 @@ class PasswordType extends AbstractType{
 	
 	public function buildForm(FormBuilderInterface $builder, array $options){
 		$builder
-				->add('password', 'password', array('label'=>'Hasło zabezpieczające'))
-				->add('send', 'submit', array('attr'=>array('class'=>'btn btn-default submit'), 'label'=>'Pobierz'));
+				->add('password', 'password', array('label'=>'Podaj hasło'))
+				->add('send', 'submit', array('attr'=>array('class'=>'btn btn-default submit'), 'label'=>'Uwierzytelnij'));
 	}
 	
 	public function getName(){

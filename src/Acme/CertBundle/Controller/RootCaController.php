@@ -25,6 +25,7 @@ class RootCaController extends Controller{
 		if ($this->getRootCaFromDb() == false){
 			$dn = new Dn;
 			$form = $this->createForm(new DnType(), $dn);
+			$form->remove('rootCaPassword');
 			$form->handleRequest($request);
 		
 			if($form->isValid()){

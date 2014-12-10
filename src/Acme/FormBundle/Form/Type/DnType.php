@@ -10,6 +10,7 @@ class DnType extends AbstractType{
 	
 	public function buildForm(FormBuilderInterface $builder, array $options){
 		$builder
+		->add('rootCaPassword', 'password', array('label'=>'Hasło głównego certyfikatu'))
 		->add('caName', 'text', array('label'=>'Nazwa Certyfikatu'))
 		->add('caPassword', 'repeated',  array(
 				'type'=>'password',

@@ -6,7 +6,7 @@ acme_cert_download:
     defaults: { _controller: AcmeCertBundle:RootCa:getCertList}
 user_area_client_cert:
     path: /app/panel/ca/cert
-    defaults: { _controller: AcmeCertBundle:ClientCert:getCaForNewCert }
+    defaults: { _controller: AcmeCertBundle:ClientCert:newSignedCert }
 user_area_new_client_cert:
     path: /app/panel/ca/newcert/{password}
     defaults: { _controller: AcmeCertBundle:ClientCert:newSignedCert, password: null }
