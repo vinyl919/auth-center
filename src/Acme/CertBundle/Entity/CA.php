@@ -45,11 +45,6 @@ class CA {
 	 * @ORM\ Column(type="date")
 	 */
 	protected $date;
-	
-	/**
-	 * @ORM\ Column(type="string")
-	 */
-	protected $caPassword;
 
 
     /**
@@ -176,20 +171,5 @@ class CA {
     public function getDate()
     {
         return $this->date;
-    }
-    
-    /**
-     * Set caPassword
-     */
-    public function setCaPassword($password){
-    	$this->caPassword = $password;
-    }
-    
-    
-    /**
-     * Get caPassword
-     */
-    public function getCaPassword(){
-    	return $this->caPassword;
     }
 }

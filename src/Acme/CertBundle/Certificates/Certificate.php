@@ -8,7 +8,7 @@ use Acme\FormBundle\Form\Type\DnType;
 
 class Certificate {
 	
-	protected $iv = 78495147;
+	protected $iv = '78495147';
 	protected $privateKey;
 	protected $cert;
 	protected $signedCert;
@@ -69,12 +69,13 @@ class Certificate {
 
 		return $this->exportNewPrivKey($this->privateKey[0]);
 	}
-	/*
+	
 	public function encrypt($type){
 		//die($this->caPassword);
-		$password = utf8_encode($this->caPassword);
+		$password = sha1($this->caPassword);
 		if($type == 'key'){
-			
+			/* $error = var_dump($this->exportNewPrivKey($this->newPrivKey));
+			die($error); */
 			return openssl_encrypt($this->privateKey[0], $this->method, $password, null, $this->iv);
 		} else if($type == 'cert'){
 			return openssl_encrypt($this->signedCert, $this->method, $password, null, $this->iv);
@@ -86,13 +87,13 @@ class Certificate {
 	
 	
 	public function decrypt($data, $password){
-		$passwd = utf8_encode($password);
-		$decrypted = openssl_decrypt($data, $this->method, $passwd, null, $this->iv);
+		$password = sha1($password);
+		$decrypted = openssl_decrypt($data, $this->method, $password, null, $this->iv);
 		//die($data.'<br />'.$password.'<br />'.$this->iv);
 		return $decrypted;
 		//die($data.' ==================== '.openssl_error_string());
 	}
-	*/
+	
 	public function getNewCsr(){
 		$newCsr = openssl_csr_new($this->dn, $this->privateKey);
 		//die($newCsr);
