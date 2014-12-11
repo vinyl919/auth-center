@@ -7,12 +7,15 @@ class CertificateManage extends Certificate{
 	
 	protected $privKey;
 	protected $cert;
+	public $caPassword;
 	
-	public function __construct($key, $cert, $password){
+	public function __construct($key, $cert, $caPassword){
 		
-		$this->privKey = parent::decrypt($key, $password);
+		$this->privKey = array($key, $caPassword);
 		//die($cert);
-		$this->cert = parent::decrypt($cert, $password);
+		$this->cert = $cert;
+		$this->caPassword = $caPassword;
+		
 		//die($this->cert);
 // 		$e='';
 // 		while(openssl_error_string()){
@@ -29,6 +32,10 @@ class CertificateManage extends Certificate{
 		return $this->cert;
 	}
 	
+	public function getCaPassword(){
+		return $this->caPassword;
+	}
+	
 	public function exportToFile($type, $password, $uid){
 		$basepath = WEB_DIRECTORY.'/tmp/cert/'.$uid;
 		if(!file_exists($basepath)){
@@ -36,7 +43,7 @@ class CertificateManage extends Certificate{
 		}
 		if($type == 'key'){
 			$outfilename = $basepath.'/ca.pem';
-			openssl_pkey_export_to_file($this->privKey, $outfilename, $password);
+			openssl_pkey_export_to_file($this->privKey[0], $outfilename, $password);
 			return $outfilename;
 		} else if($type == 'cert'){
 			$outfilename = $basepath.'/ca.cer';

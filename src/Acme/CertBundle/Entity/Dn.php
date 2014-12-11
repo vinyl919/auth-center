@@ -77,7 +77,7 @@ class Dn {
 		$this->caName = $caName;
 	}
 	public function setCaPassword($caPassword){
-		$this->caPassword = $caPassword;
+		$this->caPassword = sha1($caPassword);
 	}
 
 	

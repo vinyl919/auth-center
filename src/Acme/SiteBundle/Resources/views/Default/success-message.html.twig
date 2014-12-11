@@ -6,6 +6,7 @@
 		<div class="tablet-container">
 			{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Start', 'description': 'strona główna', 'href': url('acme_site_homepage')}) }}
 			{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Panel', 'description': 'strona główna panelu administracyjnego', 'href': url('acme_user_panel')}) }}
+			{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Powrót', 'description': 'poprzednia strona', 'href': 'javascript: history.back(-1)' }}
 		<div class="tablet-container">
 	</div>
 {% endblock %}

@@ -31,6 +31,8 @@ class RootCaController extends Controller{
 			if($form->isValid()){
 				$userId = $this->getUser()->getId();
 				//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$userId));
+				//$e = var_dump($dn);
+				//die($e);
 				$storeCertData = new Certificate($dn);
 				$key1 = $storeCertData->getNewPrivKey();
 				$storeCertData->selfSignedCert('365');
@@ -39,11 +41,14 @@ class RootCaController extends Controller{
 				//die($key1.'<br />'.$key);
 				//$encryptedPkey = openssl_encrypt( $pkey, 'DES3', $dn->getCaPassword(), null, $this->iv );
 				//$decrypted = openssl_decrypt($pkey, 'DES3', $dn->getCaPassword(), null, $this->iv);
+				//$encryptedCert = $storeCertData->encrypt('cert');
+				//$encryptedKey = $storeCertData->encrypt('key');
 				$storeDn = new CA();
 				$storeDn->setCAName($dn->getCaName())
 						->setUSERId($userId)
-						->setCAPrivKey($storeCertData->encrypt('key'));
-				$storeDn ->setCACert($storeCertData->encrypt('cert'))
+						->setCaPassword($dn->getCaPassword());
+				$storeDn->setCAPrivKey($storeCertData->getPrivKey());
+				$storeDn ->setCACert($storeCertData->getSignedCert())
 						 ->setDate(new \DateTime(date('Y-m-d')));
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($storeDn);
@@ -52,6 +57,9 @@ class RootCaController extends Controller{
 				} catch (PDOException $e){
 				return new Response($e);
 				}
+	//			$e = var_dump($encryptedCert);
+	//			$k = var_dump($encryptedKey);
+	//			die("<pre>$e<br />$k</pre>");
 				return $this->redirect($this->generateUrl('acme_user_panel'));
 			}
 		
@@ -85,46 +93,43 @@ class RootCaController extends Controller{
 		}
 	}
 	
-	public function getCertListAction(Request $request){
+	public function getCertListAction(Request $request, $type = 'cert'){
 		$error = null;
 		$test = $this->getRootCaFromDb();
 		if($test == null){
 			return $this->render('AcmeSiteBundle:Default:error.html.twig', array('error'=>'Brak certyfikatu ROOT.'));
 		}
-		$type = 'cert';
+		//$type = 'cert';
 		$password = new Password();
 		$form = $this->createForm(new PasswordType(), $password);
 		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$form->createView()));
 		$form->handleRequest($request);	
 		if($form->isValid()){
-			$passwordCheck = $this->getCaFromDbAction(true, $password->getPassword(), $type );
+			$passwordCheck = $this->passwordCheck($test, $password->getPassword());
 			//die($password->getPassword());
 			if($passwordCheck == false){
 				return $this->render('AcmeSiteBundle:Panel:cert-download.html.twig', array('type'=>$type, 'passwdForm'=>$form->createView(), 'error'=>'Błędne hasło'));
 			}
-			return $passwordCheck;
+			$download = $this->getCaFromDbAction(true, $test, $test->getCaPassword(), $type );
+			return $download;
 		}
 		return $this->render('AcmeSiteBundle:Panel:cert-download.html.twig', array('type'=>$type, 'passwdForm'=>$form->createView(), 'error'=>$error));
 	}
 	
-	public function passwordCheck($password){
-		$data = $this->getRootCaFromDb();
-		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
-		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$caCert));
-		$decoded = $this->isDecoded($caCert);
-		if($decoded == false){
+	public function passwordCheck($data, $password){
+		if(sha1($password) !== $data->getCaPassword()){
 			return false;
 		} else {
 			return true;
 		}
 	}
 	
-	public function getCaFromDbAction($download, $password, $type){
+	public function getCaFromDbAction($download, $data, $password, $type){
 		
-		$data = $this->getRootCaFromDb();
+		//$data = $this->getRootCaFromDb();
 
 	//	die(dump($data)); 
-		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
+		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $data->getCaPassword());
 		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$caCert));
 		$decoded = $this->isDecoded($caCert);
 		if($decoded == false){
@@ -135,13 +140,13 @@ class RootCaController extends Controller{
 		}
 		
 		if($type == 'cert'){
-			$path = $caCert->exportToFile('cert', $password, $this->getUser()->getId());
+			$path = $caCert->exportToFile('cert', $data->getCaPassword(), $this->getUser()->getId());
 			//return $this->render('AcmeSiteBundle:Cert:cert-download.html.twig', array('cert'=>$path, 'decrypted'=>$caCert->getPrivKey()));
 		
 			//return $this->fileDownload('ca.cer');
 			$filename = WEB_DIRECTORY.'/tmp/cert/'.$this->getUser()->getId().'/ca.cer';
 		} else if($type == 'key'){
-			$path = $caCert->exportToFile('key', $password, $this->getUser()->getId());
+			$path = $caCert->exportToFile('key', $data->getCaPassword(), $this->getUser()->getId());
 			//return $this->render('AcmeSiteBundle:Cert:cert-download.html.twig', array('cert'=>$path, 'decrypted'=>$caCert->getPrivKey()));
 			
 			//return $this->fileDownload('ca.cer');
