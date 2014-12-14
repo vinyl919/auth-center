@@ -22,7 +22,7 @@ class RootCaController extends Controller{
 	//private $iv = 72653415;
 	
 	public function newAction(Request $request){
-		if ($this->getRootCaFromDb() == false){
+		if ($this->getCertFromDb('AcmeCertBundle:CA') == false){
 			$dn = new Dn;
 			$form = $this->createForm(new DnType(), $dn);
 			$form->remove('rootCaPassword');
@@ -61,15 +61,15 @@ class RootCaController extends Controller{
 		}
 	}
 	
-	public function getRootCaFromDb(){
+	public function getCertFromDb($repository){
 		$rootCaInfo = $this->getDoctrine()
-		->getRepository('AcmeCertBundle:CA')
+		->getRepository($repository)
 		->findOneByUserId($this->getUser()->getId());
 		return $rootCaInfo;
 	}
 	
 	 public function getCaInfoAction(){
-		$rootCaInfo = $this->getRootCaFromDb();
+		$rootCaInfo = $this->getCertFromDb('AcmeCertBundle:CA');
 		$ca = false;
 		if($rootCaInfo){
 			$ca = true;
@@ -85,9 +85,17 @@ class RootCaController extends Controller{
 		}
 	}
 	
-	public function getCertListAction(Request $request, $type = 'cert'){
+	public function getCertListAction(Request $request, $repository){
+		//die($repository);
+		if($repository == 'AcmeCertBundle:CA'){
+			$mode = 'root';
+		} else {
+			$mode = 'client';
+		}
+		//die($repository.'<br />'.$mode);
 		$error = null;
-		$test = $this->getRootCaFromDb();
+		$type = 'cert';
+		$test = $this->getCertFromDb($repository);
 		if($test == null){
 			return $this->render('AcmeSiteBundle:Default:error.html.twig', array('error'=>'Brak certyfikatu ROOT.'));
 		}
@@ -97,7 +105,10 @@ class RootCaController extends Controller{
 		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$form->createView()));
 		$form->handleRequest($request);	
 		if($form->isValid()){
-			$passwordCheck = $this->getCaFromDbAction(true, $password->getPassword(), $type );
+			if ($form->get('downloadKey')->isClicked()){
+				$type = 'key';
+			}
+			$passwordCheck = $this->getCaFromDbAction(true, $test, $password->getPassword(), $type, $mode);
 			//die($password->getPassword());
 			if($passwordCheck == false){
 				return $this->render('AcmeSiteBundle:Panel:cert-download.html.twig', array('type'=>$type, 'passwdForm'=>$form->createView(), 'error'=>'Błędne hasło'));
@@ -108,7 +119,7 @@ class RootCaController extends Controller{
 	}
 	
 	public function passwordCheck($password){
-		$data = $this->getRootCaFromDb();
+		$data = $this->getCertFromDb('AcmeCertBundle:CA');
 		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
 		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$caCert));
 		$decoded = $this->isDecoded($caCert);
@@ -119,13 +130,16 @@ class RootCaController extends Controller{
 		}
 	}
 	
-	public function getCaFromDbAction($download, $password, $type){
-		
-		$data = $this->getRootCaFromDb();
+	public function getCaFromDbAction($download, $data, $password, $type, $mode = 'root'){
+		//$e = var_dump($data);
+		//die($data);
+		if($mode == 'root'){
+			$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);			
+		} else {
+			$caCert = new CertificateManage($data->getClientPrivKey(), $data->getClientCert(), $password);
+		}
 
-	//	die(dump($data)); 
-		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
-		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$caCert));
+		//$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
 		$decoded = $this->isDecoded($caCert);
 		if($decoded == false){
 			return false;
@@ -136,15 +150,9 @@ class RootCaController extends Controller{
 		
 		if($type == 'cert'){
 			$path = $caCert->exportToFile('cert', $password, $this->getUser()->getId());
-			//return $this->render('AcmeSiteBundle:Cert:cert-download.html.twig', array('cert'=>$path, 'decrypted'=>$caCert->getPrivKey()));
-		
-			//return $this->fileDownload('ca.cer');
 			$filename = WEB_DIRECTORY.'/tmp/cert/'.$this->getUser()->getId().'/ca.cer';
 		} else if($type == 'key'){
 			$path = $caCert->exportToFile('key', $password, $this->getUser()->getId());
-			//return $this->render('AcmeSiteBundle:Cert:cert-download.html.twig', array('cert'=>$path, 'decrypted'=>$caCert->getPrivKey()));
-			
-			//return $this->fileDownload('ca.cer');
 			$filename = WEB_DIRECTORY.'/tmp/cert/'.$this->getUser()->getId().'/ca.pem';
 		}
 		else {

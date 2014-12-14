@@ -1,5 +1,17 @@
 {% extends 'AcmeSiteBundle:Default:base.html.twig' %}
 {% block body %}
+	{% if data is defined %}
+	{% else %}
+		<h2>Nie posiadasz jeszcze żadnego certyfikatu klienta</h2>
+	{% endif %}
+		<div class="tablet-container">
+			{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Nowy', 'description': 'utwórz nowy certyfikat klienta', 'href': url('user_area_client_cert')}) }}
+			{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Start', 'description': 'strona główna', 'href': url('acme_site_homepage')}) }}
+			{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Panel', 'description': 'strona główna panelu administracyjnego', 'href': url('acme_user_panel')}) }}
+			
+			<div class="clear"></div>
+		</div>
+	{% if data is defined %}
 	<div class="panel panel-default">
 		<div class="panel-heading">Lista podpisanych certyfikatów</div>
 		<table class="table">
@@ -14,9 +26,10 @@
 				<td>{{ cert.id }}</td>
 				<td>{{ cert.name }}</td>
 				<td>{{ cert.date|date('Y-m-d') }}</td>
-				<td><button class="btn btn-default multi-btn">Pobierz</button><button class="btn btn-default multi-btn">Skasuj</button></td>
+				<td><a href="{{ url('acme_client_cert_download') }}"<button class="btn btn-default multi-btn">Pobierz</button></a><button class="btn btn-default multi-btn">Skasuj</button></td>
 			</tr>
 		{% endfor %}
 		</table>
 	</div>
+	{% endif %}
 {% endblock %}

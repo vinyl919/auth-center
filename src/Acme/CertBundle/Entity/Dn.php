@@ -12,6 +12,7 @@ class Dn {
 	protected $caName;
 	protected $caPassword;
 	protected $rootCaPassword;
+	protected $basicConstraints;
 	
 	public function getRootCaPassword(){
 		return $this->rootCaPassword;
@@ -79,6 +80,13 @@ class Dn {
 	public function setCaPassword($caPassword){
 		$this->caPassword = $caPassword;
 	}
+	
+	public function setBasicConstraints($basicConstraints){
+		$this->basicConstraints = $basicConstraints;
+	}
 
+	public function getBasicConstraints(){
+		return $this->basicConstraints;
+	}
 	
 }

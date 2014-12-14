@@ -27,7 +27,10 @@ class RegisterController extends Controller {
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($user);
 			$em->flush();
-			return new Response('Dodano usera: '.$user->getPlainPassword().' '.$user->getPassword());
+			return $this->render('AcmeSiteBundle:Default:success-message.html.twig', array(
+					'title' => 'Witaj w Auth-center.pl',
+					'message' => 'Rejestracja przebiegła pomyślnie. Gratulacje!'
+					));
 		}
 		
 		//return new Response('Dodano usera: '.$user->getUsername());

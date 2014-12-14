@@ -19,9 +19,18 @@ class Certificate {
 	
 	public $defaultConfig = array(
 			'digest_alg' => 'sha512',
+			'config' => '/etc/ssl/opensslbak.cnf',
+			'encrypt_key_cipher' => OPENSSL_CIPHER_3DES,
+			'private_key_bits' => 4096,
+			'basicConstraints' => 'CA:FALSE'
+	);
+	
+	public $defaultConfig2 = array(
+			'digest_alg' => 'sha512',
 			'config' => '/etc/ssl/openssl.cnf',
 			'encrypt_key_cipher' => OPENSSL_CIPHER_3DES,
-			'private_key_bits' => 4096
+			'private_key_bits' => 4096,
+			'basicConstraints' => 'CA:FALSE'
 	);
 	
 	//public $defaultConfig = null;
@@ -119,7 +128,7 @@ class Certificate {
 		$caPrivKeyArray = array($caPrivKey, $password);
 		//$error = var_dump($password);
 		//die($error);
-		$this->singCert($this->getNewCsr(), $caCert, $caPrivKeyArray, $days, $this->defaultConfig, $serial);
+		$this->singCert($this->getNewCsr(), $caCert, $caPrivKeyArray, $days, $this->defaultConfig2, $serial);
 	}
 	public function getSignedCert(){
 		return $this->signedCert;

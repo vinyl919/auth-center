@@ -20,11 +20,11 @@ use Acme\CertBundle\Entity\ClientCertificate;
 
 class ClientCertController extends RootCaController{
 	
-	public function certsListAction(){
-		$userId = $this->getUser()->getId();
-		
-		$data = $this->getDataFromDb('AcmeCertBundle:ClientCertificate', $userId);
-		
+	public function certsListAction(){		
+		$data = $this->getDataFromDb('AcmeCertBundle:ClientCertificate');
+		if(!$data){
+			return $this->render('AcmeSiteBundle:Cert:cert-list.html.twig');
+		};
 		$list = array();
 		
 		foreach($data as $key){
@@ -68,7 +68,7 @@ class ClientCertController extends RootCaController{
 				return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Dane nowego certyfikatu'));
 				
 			}
-		$certData = parent::getRootCaFromDb();
+		$certData = parent::getCertFromDb('AcmeCertBundle:CA');
 		
 		if( $certData == false){
 			return $this->redirect($this->generateUrl('user_area_root_ca_site'));
@@ -84,12 +84,12 @@ class ClientCertController extends RootCaController{
 			$storeClientCert = new ClientCertificate();
 			
 			$userId = $this->getUser()->getId();
+			$dn->setBasicConstraints('basicConstraints = CA:false');
 			$clientCert = new Certificate($dn);
-			
 
 			
 			$clientCert->getNewPrivKey();
-			$clientCert->newSignedCert($caCert, $caPrivKey, $dn->getRootCaPassword(), 1);
+			$clientCert->newSignedCert($caCert, $caPrivKey, $dn->getRootCaPassword(), $this->getSerial());
 
 			$storeClientCert->setDate(new \DateTime(date('Y-m-d')))
 							->setClientCertName($dn->getCaName())
@@ -108,30 +108,31 @@ class ClientCertController extends RootCaController{
 			}
 			
 			return $this->render('AcmeSiteBundle:Default:success-message.html.twig', array('message'=>'Nowy certyfikat został utworzony poprawnie'));
-
-		/*	$storeCertData = new Certificate($dn);
-			$storeCertData->getNewPrivKey();
-			
-			$storeCert = new ClientCertificate();
-			$storeCert->setClientCertName($dn->getCaName())
-					->setUserId($userId)
-					->setClientPrivKey($storeCertData->encrypt('key'));
-			$storeCertData->signedCert($caCert, $caPrivKey, 365, $serial);
-			*/
 			
 		}
 		
 		return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Dane nowego certyfikatu'));
 	}
 	
-	public function getDataFromDb($repository, $userId){
+	public function getSerial(){
+		$serialPrepare = $this->getDataFromDb('AcmeCertBundle:ClientCertificate');
+		if(!$serialPrepare){
+			$serial = 2;
+			return $serial;
+		}
+		$lastId = end($serialPrepare);
+		$serial = $lastId->getId();
+		$serial += 1;
+		return $serial;
+	}
+	
+	public function getDataFromDb($repository){
+		$userId = $this->getUser()->getId();
 		$data = $this->getDoctrine()
 			->getRepository($repository)
 			->findByUserId($userId);
 		
-		if(!$data){
-			throw $this->createNotFoundException('Brak odanych użytkownika.');
-		};
+		
 		
 		return $data;
 		

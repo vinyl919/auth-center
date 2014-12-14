@@ -2,6 +2,5 @@
 		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Utwórz', 'description': 'utwórz pierwszy Root CA', 'color': '#666', 'href': url('acme_cert_ca_new') }) }}
 	{% else %}
 		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Podpisz nowy', 'description': 'utwórz nowy certyfikat klienta', 'color': '#666', 'href': url('user_area_client_cert')}) }}
-		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Pobierz', 'description': 'Twój ROOT CA', 'color': '#666', 'href': url('acme_cert_download', {'type': 'cert'})}) }}
-		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Pobierz', 'description': 'Klucz Twojego ROOT CA', 'color': '#666', 'href': url('acme_cert_download', {'type': 'key'})}) }}
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Pobierz', 'description': 'Twój certyfikat lub klucz certyfikatu ROOT', 'color': '#666', 'href': url('acme_cert_download')})}}
 {% endif %}
