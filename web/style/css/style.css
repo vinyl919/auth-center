@@ -172,11 +172,12 @@ body, html {
 	-webkit-box-shadow: -6px 6px 5px 0px rgba(0, 0, 0, 0.75);
 	-moz-box-shadow:    -6px 6px 5px 0px rgba(0, 0, 0, 0.75);
 	box-shadow:         -6px 6px 5px 0px rgba(0, 0, 0, 0.75);
-	transition-duration: 350ms;
+	transition-duration: 300ms;
 	border: 1px solid #aaa;
 	color: #444;
-	margin-left: 1.9em;
-	margin-right: 1.7em;
+	-ms-transform: scale(1.01,1.01);
+    -webkit-transform: scale(1.01,1.01);
+    transform: scale(1.01,1.01);
 
 }
 
@@ -208,4 +209,29 @@ body, html {
 	font-size: 1.4em;
 	font-weight: normal;
 	color: #666;
+}
+
+.dnFormContainer {
+	clear: both;
+}
+
+.tabletVertivalContainer{
+	max-width: 31.2em;
+	float: right;
+	margin: 0 auto;
+
+}
+
+.tabletVertivalContainer .tablet{
+	width: 11em;
+	height: 11em;
+	float: left;
+	color: #666;
+	margin: 1.3em;
+}
+
+.tabletVertivalContainer .tablet:hover{
+	-ms-transform: scale(1.01,1.01);
+    -webkit-transform: scale(1.01,1.01);
+    transform: scale(1.01,1.01);
 }
