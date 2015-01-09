@@ -1,12 +1,15 @@
 {% extends 'AcmeSiteBundle:Default:base.html.twig' %}
 {% block body %}
-<p>Witaj: {{ app.user.username }}!</p>
-<div class="tablet-container">
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Root CA', 'description': 'główny certyfikat', 'href': url('user_area_root_ca_site')}) }}
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Certyfikaty', 'description': 'lista Twoich certyfikatków', 'href': url('user_area_certs_site')}) }}
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'href': url('user_area_certs_site')}) }}
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy afasf asf asf aasdfas', 'href': '#'}) }}
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Start', 'description': 'strona główna', 'href': url('acme_site_homepage')}) }}
-	{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Powrót', 'description': 'poprzednia strona', 'href': 'javascript: history.back(-1)'}) }}
+<div class="content">
+	<h2>Panel administracyjny.</h2>
+	<p>Witaj <span class="username">{{ app.user.username }}</span>.</p>
+	<div class="tablet-container">
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Root CA', 'description': 'główny certyfikat', 'href': url('user_area_root_ca_site')}) }}
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Certyfikaty', 'description': 'lista Twoich certyfikatków', 'href': url('user_area_certs_site')}) }}
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'pierwszy', 'href': url('user_area_certs_site')}) }}
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Pomoc', 'description': 'wszystkie niezbędne informacje', 'href': url('panel_help')}) }}
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Start', 'description': 'strona główna', 'href': url('acme_site_homepage')}) }}
+		{{ include('AcmeSiteBundle:Default:tablet.html.twig', {'name': 'Powrót', 'description': 'poprzednia strona', 'href': 'javascript: history.back(-1)'}) }}
+	</div>
 </div>
 {% endblock %}

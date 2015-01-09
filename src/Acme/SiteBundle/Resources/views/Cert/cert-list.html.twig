@@ -26,7 +26,7 @@
 				<td>{{ cert.id }}</td>
 				<td>{{ cert.name }}</td>
 				<td>{{ cert.date|date('Y-m-d') }}</td>
-				<td><a href="{{ url('acme_client_cert_download') }}"<button class="btn btn-default multi-btn">Pobierz</button></a><button class="btn btn-default multi-btn">Skasuj</button></td>
+				<td><a href="{{ url('acme_client_cert_download', {'id': cert.id}) }}"<button class="btn btn-default multi-btn">Pobierz</button></a><a href="{{ url('acme_client_cert_unset', {id: cert.id})}}" alt="Skasuj certyfikat {{ cert.id }}" title="Skasuj certyfikat {{ cert.id }}"><button class="btn btn-default multi-btn">Skasuj</button></td>
 			</tr>
 		{% endfor %}
 		</table>

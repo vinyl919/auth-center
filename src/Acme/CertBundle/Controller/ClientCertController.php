@@ -28,7 +28,9 @@ class ClientCertController extends RootCaController{
 		$list = array();
 		
 		foreach($data as $key){
+			if ($key->getActive() > 0 ){
 			$list[]=array('id'=>$key->getId(), 'name'=>$key->getClientCertName(), 'date'=>$key->getDate());
+			}
 		}
 		//$e = var_dump($list);
 		
@@ -96,7 +98,8 @@ class ClientCertController extends RootCaController{
 							->setCaId((int)$caId)
 							->setUserId($userId)
 							->setClientPrivKey($clientCert->encrypt('key'))
-							->setClientCert($clientCert->encrypt('cert'));
+							->setClientCert($clientCert->encrypt('cert'))
+							->setActive(1);
 			
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($storeClientCert);
@@ -130,13 +133,25 @@ class ClientCertController extends RootCaController{
 		$userId = $this->getUser()->getId();
 		$data = $this->getDoctrine()
 			->getRepository($repository)
-			->findByUserId($userId);
-		
-		
-		
+			->findByUserId($userId);		
 		return $data;
 		
 		//$e = var_dump($data);
 		//die($e);
+	}
+	
+	public function unsetCertAction($id){
+		$em = $this->getDoctrine()->getManager();
+		$cert = $em	->getRepository('AcmeCertBundle:ClientCertificate')
+					->findOneBy(array(
+							'userId' => $this->getUser()->getId(),
+							'id' => $id
+							));
+		if(!$cert){
+			throw $this->createNotFoundException('Nie znaleziono certyfikatu urzytkownika o id: '.$id);
+		}
+		$cert->setActive(0);
+		$em->flush();
+		return $this->render('AcmeSiteBundle:Default:success-message.html.twig', array('message'=>'Certyfikat został skasowany poprawnie.'));
 	}
 }

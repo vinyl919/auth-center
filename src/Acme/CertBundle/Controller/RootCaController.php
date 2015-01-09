@@ -61,15 +61,15 @@ class RootCaController extends Controller{
 		}
 	}
 	
-	public function getCertFromDb($repository){
+	public function getCertFromDb($repository, $id = 1){
 		$rootCaInfo = $this->getDoctrine()
 		->getRepository($repository)
-		->findOneByUserId($this->getUser()->getId());
+		->findOneBy(array('userId' => $this->getUser()->getId(), 'id' => $id));
 		return $rootCaInfo;
 	}
 	
 	 public function getCaInfoAction(){
-		$rootCaInfo = $this->getCertFromDb('AcmeCertBundle:CA');
+	 	$rootCaInfo = $this->getCertFromDb('AcmeCertBundle:CA');
 		$ca = false;
 		if($rootCaInfo){
 			$ca = true;
@@ -85,17 +85,19 @@ class RootCaController extends Controller{
 		}
 	}
 	
-	public function getCertListAction(Request $request, $repository){
+	public function getCertListAction(Request $request, $repository, $id){
 		//die($repository);
-		if($repository == 'AcmeCertBundle:CA'){
+		if($repository == 'CA'){
 			$mode = 'root';
-		} else {
+			$repository = 'AcmeCertBundle:CA';
+		} elseif ($repository == 'Client') {
 			$mode = 'client';
+			$repository = 'AcmeCertBundle:ClientCertificate';
 		}
 		//die($repository.'<br />'.$mode);
 		$error = null;
 		$type = 'cert';
-		$test = $this->getCertFromDb($repository);
+		$test = $this->getCertFromDb($repository, $id);
 		if($test == null){
 			return $this->render('AcmeSiteBundle:Default:error.html.twig', array('error'=>'Brak certyfikatu ROOT.'));
 		}
@@ -134,9 +136,13 @@ class RootCaController extends Controller{
 		//$e = var_dump($data);
 		//die($data);
 		if($mode == 'root'){
-			$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);			
+			$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);	
+			$certName = 'ca.cer';
+			$certKeyName = 'ca.pem';
 		} else {
 			$caCert = new CertificateManage($data->getClientPrivKey(), $data->getClientCert(), $password);
+			$certName = $data->getClientCertName().'.cer';
+			$certKeyName = $data->getClientCertName().'.pem';
 		}
 
 		//$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
@@ -149,11 +155,11 @@ class RootCaController extends Controller{
 		}
 		
 		if($type == 'cert'){
-			$path = $caCert->exportToFile('cert', $password, $this->getUser()->getId());
-			$filename = WEB_DIRECTORY.'/tmp/cert/'.$this->getUser()->getId().'/ca.cer';
+			$path = $caCert->exportToFile('cert', $password, $this->getUser()->getId(), $certName);
+			$filename = WEB_DIRECTORY.'/tmp/cert/'.$this->getUser()->getId().'/'.$certName;
 		} else if($type == 'key'){
-			$path = $caCert->exportToFile('key', $password, $this->getUser()->getId());
-			$filename = WEB_DIRECTORY.'/tmp/cert/'.$this->getUser()->getId().'/ca.pem';
+			$path = $caCert->exportToFile('key', $password, $this->getUser()->getId(), $certKeyName);
+			$filename = WEB_DIRECTORY.'/tmp/cert/'.$this->getUser()->getId().'/'.$certKeyName;
 		}
 		else {
 			die('Błędny typ danych');

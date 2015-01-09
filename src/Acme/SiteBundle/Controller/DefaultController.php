@@ -9,7 +9,7 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('AcmeSiteBundle:Default:base.html.twig', array('title'=>'Twoje centrum autoryzacji'));
+        return $this->render('AcmeSiteBundle:Default:base.html.twig', array('title'=>'Auth-Center.pl - Twoje centrum autoryzacji'));
     }
     
     public function accountAction(){

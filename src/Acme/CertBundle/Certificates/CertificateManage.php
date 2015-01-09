@@ -29,17 +29,17 @@ class CertificateManage extends Certificate{
 		return $this->cert;
 	}
 	
-	public function exportToFile($type, $password, $uid){
+	public function exportToFile($type, $password, $uid, $name){
 		$basepath = WEB_DIRECTORY.'/tmp/cert/'.$uid;
 		if(!file_exists($basepath)){
 			mkdir($basepath, 0777, true);
 		}
 		if($type == 'key'){
-			$outfilename = $basepath.'/ca.pem';
+			$outfilename = $basepath.'/'.$name;
 			openssl_pkey_export_to_file($this->privKey, $outfilename, $password);
 			return $outfilename;
 		} else if($type == 'cert'){
-			$outfilename = $basepath.'/ca.cer';
+			$outfilename = $basepath.'/'.$name;
 			openssl_x509_export_to_file($this->cert, $outfilename);
 			return $outfilename;
 		} else {

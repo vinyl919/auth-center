@@ -10,3 +10,8 @@ user_area_root_ca_site:
 user_area_certs_site:
     path: /app/panel/certs
     defaults: { _controller: AcmeCertBundle:ClientCert:certsList }
+panel_help:
+    path: /app/panel/help
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template:    'AcmeSiteBundle:Panel:help.html.twig'

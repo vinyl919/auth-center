@@ -1,0 +1,15 @@
+{% extends 'AcmeSiteBundle:Default:base.html.twig' %}
+	{% block title %}
+		Panel - Strona pomocy
+	{% endblock %}
+	{% block body %}
+		<div class="content">
+			<h2>Pomoc.</h2>
+			<p class="h2Info">Na tej stronie docelowo znajdziesz wszystkie niezbędne informacje potrzebne do obsługi aplikacji, utworzenia i wykorzystywania Twojego własnego <span class="firstUpperBold">Certification Authority</span> - Urzędu certyfikacji.
+			<p><hr /></p>
+
+
+			<h3>1. Rejestracja</h3>
+			<p class="h3Info">Pierwszym i niezbędnym krokiem jest <a href="{{ url('acme_user_login')}}" target="_blank" alt="Rejestracja" title="Rejestracja">rejestracja</a>. Na Twoim koncie będą zapisywane wszystkie tworzone przez Ciebie certyfikaty oraz klucze. Będziesz mógł je pobrać lub skasować w razie potrzeby. Wymagany jest unikalny login oraz adres email. Po udanej rejestracji możesz się <a href="{{ url('acme_user_login')}}" target="_blank" alt="Logowanie" title="Logowanie">zalogować</a>.</p>
+		</div>
+	{% endblock %}

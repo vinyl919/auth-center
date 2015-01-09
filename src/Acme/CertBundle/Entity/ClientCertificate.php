@@ -26,6 +26,10 @@ class ClientCertificate {
 	/**
 	 * @ORM\ Column(type="integer")
 	 */
+	protected $active;
+	/**
+	 * @ORM\ Column(type="integer")
+	 */
 	protected $caId;
 	
 	/**
@@ -196,5 +200,13 @@ class ClientCertificate {
     public function getCaId()
     {
         return $this->caId;
+    }
+    
+    public function setActive($active){
+    	$this->active = $active;
+    }
+    
+    public function getActive(){
+    	return $this->active;
     }
 }
