@@ -52,8 +52,8 @@ class RootCaController extends Controller{
 				} catch (PDOException $e){
 				return new Response($e);
 				}
-				return $this->redirect($this->generateUrl('acme_user_panel'));
-			}
+				return $this->render('AcmeSiteBundle:Default:success-message.html.twig', array('message'=>'Certyfikat ROOT CA został utworzony poprawnie.'));
+				}
 		
 		return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Dn form'));
 		} else {
@@ -120,9 +120,20 @@ class RootCaController extends Controller{
 		return $this->render('AcmeSiteBundle:Panel:cert-download.html.twig', array('type'=>$type, 'passwdForm'=>$form->createView(), 'error'=>$error));
 	}
 	
-	public function passwordCheck($password){
-		$data = $this->getCertFromDb('AcmeCertBundle:CA');
-		$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
+	public function passwordCheck($password, $repository, $id = 1){
+		if($repository == 'CA'){
+			$repository = 'AcmeCertBundle:CA';
+			$data = $this->getCertFromDb($repository, $id);
+			$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
+		} elseif ($repository == 'client'){
+			$repository = 'AcmeCertBundle:ClientCertificate';
+			$data = $this->getCertFromDb($repository, $id);
+			$caCert = new CertificateManage($data->getClientPrivKey(), $data->getClientCert(), $password);
+		} else {
+			return $this->createNotFoundException('Błędne repozytorium.');
+		}
+		//$data = $this->getCertFromDb($repository, $id);
+		//$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
 		//return $this->render('AcmeSiteBundle:Default:dump.html.twig', array('data'=>$caCert));
 		$decoded = $this->isDecoded($caCert);
 		if($decoded == false){
@@ -182,7 +193,17 @@ class RootCaController extends Controller{
 		$response->setContent(readfile($filename));
 		return $response;
 	}
-
+	
+	public function authentication($password, $repository){
+		$authenticate = $this->passwordCheck($password, $repository);
+			//die($password->getPassword());
+		if($authenticate == false){
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 }
 
 

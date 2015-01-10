@@ -17,6 +17,7 @@ use Acme\CertBundle\Entity\Dn;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Acme\CertBundle\Entity\ClientCertificate;
+use Acme\FormBundle\Form\Type\AuthenticateType;
 
 class ClientCertController extends RootCaController{
 	
@@ -65,7 +66,7 @@ class ClientCertController extends RootCaController{
 		//$form->remove('rootCaPassword');
 		$form->handleRequest($request);
 		if($form->isValid()){
-			if($passwordCheck = parent::passwordCheck($dn->getRootCaPassword()) == false){
+			if($passwordCheck = parent::passwordCheck($dn->getRootCaPassword(), 'CA') == false){
 				$form->addError(new FormError('Błędne hasło certyfikatu ROOT'));
 				return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Dane nowego certyfikatu'));
 				
@@ -135,23 +136,40 @@ class ClientCertController extends RootCaController{
 			->getRepository($repository)
 			->findByUserId($userId);		
 		return $data;
-		
+				
 		//$e = var_dump($data);
 		//die($e);
 	}
 	
-	public function unsetCertAction($id){
+	public function unsetCertAction($id, Request $request){
+		
 		$em = $this->getDoctrine()->getManager();
 		$cert = $em	->getRepository('AcmeCertBundle:ClientCertificate')
-					->findOneBy(array(
-							'userId' => $this->getUser()->getId(),
-							'id' => $id
-							));
+		->findOneBy(array(
+				'userId' => $this->getUser()->getId(),
+				'id' => $id
+		));
 		if(!$cert){
 			throw $this->createNotFoundException('Nie znaleziono certyfikatu urzytkownika o id: '.$id);
 		}
-		$cert->setActive(0);
-		$em->flush();
-		return $this->render('AcmeSiteBundle:Default:success-message.html.twig', array('message'=>'Certyfikat został skasowany poprawnie.'));
+		
+		
+		$password = new Password();
+		$form = $this->createForm(new AuthenticateType(), $password);
+		$form->handleRequest($request);	
+		
+		if ($form->isValid()){	
+		$authenticate = parent::passwordCheck($password->getPassword(), 'client', $id);
+			if ($authenticate == true){
+				$cert->setActive(0);
+				$em->flush();
+				return $this->render('AcmeSiteBundle:Default:success-message.html.twig', array('message'=>'Certyfikat został skasowany poprawnie.'));
+			} else {
+				return $this->render('AcmeSiteBundle:Form:password.html.twig', array('passwdForm'=>$form->createView(), 'error'=>'Błędne hasło.'));
+		
+			}
+		}
+		return $this->render('AcmeSiteBundle:Form:password.html.twig', array('passwdForm'=>$form->createView(), 'message'=>'Podaj hasło certyfikatu: '.$cert->getClientCertName()));
+		
 	}
 }
