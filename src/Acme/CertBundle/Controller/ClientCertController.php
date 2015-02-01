@@ -1,6 +1,8 @@
 <?php
 namespace Acme\CertBundle\Controller;
 
+use Acme\SiteBundle\AcmeSiteBundle;
+
 use Symfony\Component\Form\FormError;
 
 use Acme\CertBundle\Controller\RootCaController;
@@ -60,6 +62,12 @@ class ClientCertController extends RootCaController{
 	}
 	
 	public function newSignedCertAction(Request $request){
+		// sprawdzenie istnienia root ca
+		//die(parent::getCertFromDb('AcmeCertBundle:CA'));
+		if (parent::getCertFromDb('AcmeCertBundle:CA') === null){
+			return $this->render('AcmeSiteBundle:Cert:root-ca-site.html.twig', array('info'=>'Nie posiadasz jeszcze własnego centrum autoryzacji'));
+		}
+		
 		
 		$dn = new Dn;
 		$form = $this->createForm(new DnType(), $dn);
