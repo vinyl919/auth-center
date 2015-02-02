@@ -1,5 +1,33 @@
 {% extends 'AcmeSiteBundle:Default:base.html.twig' %}
 	{% block body %}
-		<h1>Auth-Center.pl - Twoje centrum autoryzacji!</h1>
-		
+		<div class="mainPage">
+			<h1>Witaj na stronie Auth-Center.pl</h1>
+			<p>Aplikacja ta, została zaprojektowana w celu ułatwienia i automatyzacji procesu tworzenia Lokalnych Centrów Autoryzacji.</p>
+			<p>Utworzenie swojego własnego Root CA wymaga jedynie rejestracji konta i wypełnienia odpowiedniego formularza.</p>
+			<p>Certyfikaty w standardzie X.509 oraz klucze prywatne RSA tworzone są automatycznie, Ty podajesz tylko niezbedne dane.</p>
+			<p>Podpisanie nowego certyfikatu sprowadza się do kilku kliknięć.</p>
+			<h3>Zalety aplikacji:</h3>
+			<ul class="mainPageList">
+				<li>
+					Szybki i łatwy sposób na utworzenie własnego Centrum Autoryzacji
+				</li>
+				<li>
+					Wykorzystuje implementację kryptografii OpenSSL
+				</li>
+				<li>
+					Działa niezależnie od platformy
+				</li>
+				<li>
+					Zabezpieczone dane przechowywane w bazie danych
+				</li>
+				<li>
+					Dostępność 24/7
+				</li>
+				<li>
+					Do obsługi wymagana są jedynie przeglądarka i dostęp do internetu
+				</li>
+			</ul>
+
+		</div>
+		{% include('AcmeSiteBundle:Default:logotypes.html.twig') %}
 	{% endblock %}

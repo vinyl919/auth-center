@@ -25,7 +25,9 @@ class RootCaController extends Controller{
 		if ($this->getCertFromDb('AcmeCertBundle:CA') == false){
 			$dn = new Dn;
 			$form = $this->createForm(new DnType(), $dn);
-			$form->remove('rootCaPassword');
+			$form->remove('rootCaPassword')
+				->remove('days')
+				->remove('keyLength');
 			$form->handleRequest($request);
 		
 			if($form->isValid()){

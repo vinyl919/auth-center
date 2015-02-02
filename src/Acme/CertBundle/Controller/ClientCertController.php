@@ -2,6 +2,8 @@
 namespace Acme\CertBundle\Controller;
 
 use Acme\SiteBundle\AcmeSiteBundle;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
+
 
 use Symfony\Component\Form\FormError;
 

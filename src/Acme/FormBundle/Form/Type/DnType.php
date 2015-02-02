@@ -18,6 +18,14 @@ class DnType extends AbstractType{
 				'first_options'=>array('label'=>'Hasło zabezpieczające'),
 				'second_options'=>array('label'=>'Powtórz hasło')
 		))
+		->add('days', 'number', array('label'=>'Ważność certyfikatu'))
+		->add('keyLength','choice',  array(
+				'label'=>'Długość klucza prywatnego',
+				'choice_list'=> new ChoiceList(
+						array(1024, 2048, 4096, 8192),
+						array('1024bit', '2048bit', '4096bit', '8192bit')
+				)
+		))
 		->add('countryName','choice',  array(
 				'label'=>'Kraj',
 				'choice_list'=> new ChoiceList(

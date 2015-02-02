@@ -13,6 +13,8 @@ class Dn {
 	protected $caPassword;
 	protected $rootCaPassword;
 	protected $basicConstraints;
+	protected $days;
+	protected $keyLength;
 	
 	public function getRootCaPassword(){
 		return $this->rootCaPassword;
@@ -89,4 +91,19 @@ class Dn {
 		return $this->basicConstraints;
 	}
 	
+	public function getDays(){
+		return $this->days;
+	}
+	
+	public function getKeyLength(){
+		return $this->keyLength;
+	}
+	
+	public function setDays($days){
+		$this->days = $days;
+	}
+	
+	public function setKeyLength($keyLength){
+		$this->keyLength = $keyLength;
+	}
 }

@@ -14,8 +14,10 @@ class Certificate {
 	protected $signedCert;
 	protected $method = 'DES3';
 	
+	
 	public $caName;
 	public $caPassword;
+	public $days = 365;
 	
 	public $defaultConfig = array(
 			'digest_alg' => 'sha512',
@@ -25,13 +27,13 @@ class Certificate {
 			'basicConstraints' => 'CA:FALSE'
 	);
 	
-	public $defaultConfig2 = array(
+	/*public $defaultConfig2 = array(
 			'digest_alg' => 'sha512',
 			'config' => '/etc/ssl/openssl.cnf',
 			'encrypt_key_cipher' => OPENSSL_CIPHER_3DES,
 			'private_key_bits' => 4096,
 			'basicConstraints' => 'CA:FALSE'
-	);
+	);*/
 	
 	//public $defaultConfig = null;
 	
@@ -56,6 +58,14 @@ class Certificate {
 				'commonName'=>$form->getCommonName(),
 				'emailAddress'=>$form->getEmailAddress(),
 		);
+		
+		if($form->getKeyLength()){
+			$this->defaultConfig['private_key_bits'] = $form->getKeyLength();
+		}
+		
+		if($form->getDays()){
+			$this->days = $form->getDays();
+		}
 		
 		$this->caName = $form->getCaName();
 		$this->caPassword = $form->getCaPassword();
@@ -118,17 +128,19 @@ class Certificate {
 	public function selfSignedCert($days){
 		//die($this->newPrivKey);
 		$privKey = $this->privateKey;
-		$signedCert = $this->singCert($this->getNewCsr(), null, $privKey, $days, $this->defaultConfig, 1);
+		$signedCert = $this->singCert($this->getNewCsr(), null, $privKey, 3650, $this->defaultConfig, 1);
 		//die ($signedCert);
 		//return $this->signedCert;
 	}
 	
 	
-	public function newSignedCert($caCert, $caPrivKey, $password, $serial, $days = 365){
+	public function newSignedCert($caCert, $caPrivKey, $password, $serial){
 		$caPrivKeyArray = array($caPrivKey, $password);
+		$days = $this->days;
+		$this->defaultConfig['config'] = '/etc/ssl/openssl.cnf';
 		//$error = var_dump($password);
 		//die($error);
-		$this->singCert($this->getNewCsr(), $caCert, $caPrivKeyArray, $days, $this->defaultConfig2, $serial);
+		$this->singCert($this->getNewCsr(), $caCert, $caPrivKeyArray, $days, $this->defaultConfig, $serial);
 	}
 	public function getSignedCert(){
 		return $this->signedCert;

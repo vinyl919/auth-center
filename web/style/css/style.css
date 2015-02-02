@@ -260,3 +260,38 @@ p{
 	text-align: justify;
 	max-width: 800px;
 }
+
+.mainPage p, .mainPage li{
+	transition-duration: 250ms;
+	color: #666;
+
+}
+
+.logotypes img, .logotypes img:hover{
+	transition-duration: 350ms;
+}
+
+.mainPage p:hover, .mainPageList li:hover{
+	color: #000;
+	transition-duration: 250ms;
+	cursor: pointer;
+}
+
+.mainPageList li:hover{
+	margin-left: 10px;
+	transition-duration: 300ms;
+}
+.logotypes{
+	margin-top: 40px;
+}
+.logotypes img{
+	height: 60px;
+	margin-left: 10px;
+	opacity: 0.8;
+	position: relative;
+}
+
+.logotypes img:hover{
+	opacity: 1;
+	transform: scale(1.1);
+}
