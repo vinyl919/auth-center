@@ -64,9 +64,16 @@ class RootCaController extends Controller{
 	}
 	
 	public function getCertFromDb($repository, $id = 1){
-		$rootCaInfo = $this->getDoctrine()
-		->getRepository($repository)
-		->findOneBy(array('userId' => $this->getUser()->getId(), 'id' => $id));
+
+		if($repository === 'AcmeCertBundle:CA'){
+			$rootCaInfo = $this->getDoctrine()
+			->getRepository($repository)
+			->findOneBy(array('userId' => $this->getUser()->getId()));
+		} else {
+			$rootCaInfo = $this->getDoctrine()
+			->getRepository($repository)
+			->findOneBy(array('userId' => $this->getUser()->getId(), 'id' => $id));
+		}
 		return $rootCaInfo;
 	}
 	
@@ -125,7 +132,7 @@ class RootCaController extends Controller{
 	public function passwordCheck($password, $repository, $id = 1){
 		if($repository == 'CA'){
 			$repository = 'AcmeCertBundle:CA';
-			$data = $this->getCertFromDb($repository, $id);
+			$data = $this->getCertFromDb('AcmeCertBundle:CA');
 			$caCert = new CertificateManage($data->getCaPrivKey(), $data->getCaCert(), $password);
 		} elseif ($repository == 'client'){
 			$repository = 'AcmeCertBundle:ClientCertificate';
