@@ -22,8 +22,8 @@ class DnType extends AbstractType{
 		->add('keyLength','choice',  array(
 				'label'=>'Długość klucza prywatnego',
 				'choice_list'=> new ChoiceList(
-						array(1024, 2048, 4096, 8192),
-						array('1024bit', '2048bit', '4096bit', '8192bit')
+						array(1024, 2048, 4096),
+						array('1024bit', '2048bit', '4096bit')
 				)
 		))
 		->add('countryName','choice',  array(

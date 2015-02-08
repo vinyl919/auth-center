@@ -57,15 +57,20 @@
 
 <div id="footer">
 	<div id="copyrights">
-		All rights reserved.
+		<p>&copy; All rights reserved.</p>
+		<p>License GNU GPL v.2.</p>
 	</div>
 	<div class="footer-menu">
-		<p>About</p>
+		<h2>Na skróty</h2>
 		<ul>
-			<li><a href="#">Konto</a></li>
-			<li><a href="#">Konto</a></li>
-			<li><a href="#">Konto</a></li>
+			<li><a href="{{ path('acme_site_homepage') }}">Home</a></li>
+			<li><a href="{{ path('user_help') }}">Pomoc</a></li>
+			<li><a href="{{ path('acme_user_login') }}">Logowanie / Rejestracja</a></li>
+			<li><a href="{{ path('acme_user_panel') }}">Panel użytkownika</a></li>
+			<li><a href="#">O programie</a></li>
+			<div class="clear"></div>
 		</ul>
+		
 		{% block footer %}
 
 		{% endblock %}
