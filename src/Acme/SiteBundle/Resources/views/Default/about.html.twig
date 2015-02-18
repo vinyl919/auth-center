@@ -1,0 +1,13 @@
+{% extends('AcmeSiteBundle:Default:base.html.twig') %}
+	{% block body %}
+		<div class="content helpPage">
+			<h3>O aplikacji</h3>
+			<p style="font-style: italic;">Niniejsza aplikacja internetowa została utworzona na potrzeby pracy inżynierskiej.</p>
+			<p>Aplikacja ma na celu ułatwienie procesu tworzenia lokalnych centrów autoryzacji oraz wystawiania nowych certyfikatów. Dzięki zastosowanym technologiom, utworzenie własnego Centrum Autoryzacji sprowadza się do kilku kliknięć i wypełnienia odpowiedniego formularza. Wystawianie nowych certyfikatów jest równie proste. Dane użytkownika i jego certyfikatów, przechowywane są w bazie danych, a sam użytkownik ma do nich dostęp praktycznie 24/7. Przechowywane dane są dopowiednio szyfrowane, a dostępdo nich wymaga dodatkowej autoryzacji, co dodatkowo zwiększa bezpieczeństwo.</p>
+			</p><p><hr /></p>
+			<h3>Kontakt</h3>
+			<p>Kontakt mailowy pod adresem <a href="mailto: admin@auth-center.pl">admin@auth-center.pl</a>.</p>
+		</div>
+
+		{% include('AcmeSiteBundle:Default:logotypes.html.twig') %}
+	{% endblock %}

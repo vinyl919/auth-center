@@ -57,7 +57,7 @@ class RootCaController extends Controller{
 				return $this->render('AcmeSiteBundle:Default:success-message.html.twig', array('message'=>'Certyfikat ROOT CA został utworzony poprawnie.'));
 				}
 		
-		return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Dn form'));
+		return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Tworzenie lokalnego Centrum Autoryzacji'));
 		} else {
 			return $this->redirect($this->generateUrl('acme_user_panel'));
 		}

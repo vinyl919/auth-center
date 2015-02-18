@@ -78,7 +78,7 @@ class ClientCertController extends RootCaController{
 		if($form->isValid()){
 			if($passwordCheck = parent::passwordCheck($dn->getRootCaPassword(), 'CA') == false){
 				$form->addError(new FormError('Błędne hasło certyfikatu ROOT'));
-				return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Dane nowego certyfikatu'));
+				return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Wystawianie nowego certyfikatu'));
 				
 			}
 		$certData = parent::getCertFromDb('AcmeCertBundle:CA');
@@ -125,7 +125,7 @@ class ClientCertController extends RootCaController{
 			
 		}
 		
-		return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Dane nowego certyfikatu'));
+		return $this->render('AcmeSiteBundle:Form:dn.html.twig', array('dnForm'=>$form->createView(), 'title'=>'Wystawianie nowego certyfikatu'));
 	}
 	
 	public function getSerial(){

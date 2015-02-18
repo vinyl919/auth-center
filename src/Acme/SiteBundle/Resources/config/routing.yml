@@ -15,3 +15,8 @@ user_help:
     defaults:
         _controller: FrameworkBundle:Template:template
         template:    'AcmeSiteBundle:Panel:help.html.twig'
+site_about:
+    path: /about
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: 'AcmeSiteBundle:Default:about.html.twig'

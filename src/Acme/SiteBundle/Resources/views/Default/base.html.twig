@@ -7,7 +7,7 @@
 		{% if title is defined %}
 			{{ title }}
 		{% else %}
-			Default title
+			Auth-Center.pl - Twoje centrum autoryzacji
 		{% endif %}
 	{% endblock %}
 	</title>
@@ -67,7 +67,7 @@
 			<li><a href="{{ path('user_help') }}">Pomoc</a></li>
 			<li><a href="{{ path('acme_user_login') }}">Logowanie / Rejestracja</a></li>
 			<li><a href="{{ path('acme_user_panel') }}">Panel użytkownika</a></li>
-			<li><a href="#">O programie</a></li>
+			<li><a href="{{ path('site_about') }}">O programie</a></li>
 			<div class="clear"></div>
 		</ul>
 		

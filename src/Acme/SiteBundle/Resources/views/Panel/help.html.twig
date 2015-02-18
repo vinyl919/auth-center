@@ -3,13 +3,39 @@
 		Panel - Strona pomocy
 	{% endblock %}
 	{% block body %}
-		<div class="content">
+		<div class="content helpPage" style="max-width: 700px; text-align: justify;">
 			<h2>Pomoc.</h2>
-			<p class="h2Info">Na tej stronie docelowo znajdziesz wszystkie niezbędne informacje potrzebne do obsługi aplikacji, utworzenia i wykorzystywania Twojego własnego <span class="firstUpperBold">Certification Authority</span> - Urzędu certyfikacji.
+			<p>Na tej stronie znajdziesz wszystkie niezbędne informacje potrzebne do obsługi aplikacji, utworzenia i wykorzystywania Twojego własnego <span class="firstUpperBold">Certification Authority</span> - Urzędu certyfikacji.
 			<p><hr /></p>
 
 
-			<h3>1. Rejestracja</h3>
+			<h3 id="rejestracja">1. Rejestracja</h3>
 			<p class="h3Info">Pierwszym i niezbędnym krokiem jest <a href="{{ url('acme_user_login')}}" target="_blank" alt="Rejestracja" title="Rejestracja">rejestracja</a>. Na Twoim koncie będą zapisywane wszystkie tworzone przez Ciebie certyfikaty oraz klucze. Będziesz mógł je pobrać lub skasować w razie potrzeby. Wymagany jest unikalny login oraz adres email. Po udanej rejestracji możesz się <a href="{{ url('acme_user_login')}}" target="_blank" alt="Logowanie" title="Logowanie">zalogować</a>.</p>
+			<p><hr /></p>
+
+			<h3 id="root-ca">2. Centrum Autoryzacji</h3>
+			<p>Kolejnym etapem jest utworzenie swojego głównego Centrum Autoryzacji.
+			W tym celu należy wejść do <a href="{{ url('acme_user_panel') }}" title="Panel administracyjny">panelu administracyjnego</a>, wybrać zakładkę <a href="{{ url('user_area_root_ca_site') }}" title="Root CA">ROOT CA</a>, a następnie UTWÓRZ. Wygenerowanie nowego urzędu certyfikacji wymaga jedynie poprawnego wypełnienia formularza.</p>
+			<p>Dla jednego konta możliwe jest posiadanie tylko jednego Root CA. Dla każdego kolejnego wymagane jest osobne konto.</p>
+			<p><span class="warn">Ważne! Należy zapamiętać bądź zapisac hasło zabezpieczające tworzony urząd certyfikacji, gdyż nie ma możliwośći zmiany bądź odzyskania hasła.</span></p>
+			</p><p><hr /></p>
+
+			<h3 id="client-cert">3. Podpisywanie certyfikatów</h3>
+			<p>Gdy już posiadasz swoje <a href="{{ url('user_area_root_ca_site') }}" title="Root CA">prywatne centrum autoryzacji</a>, możesz przejść do następnego kroku, czyli wystawienia nowego certyfikatu. By tego dokonać, należy w <a href="{{ url('acme_user_panel') }}" title="Panel administracyjny">panelu administracyjnym</a> wybrać zakładkę <a href="{{ url('user_area_certs_site') }}" title="Certyfikaty klienta">CERTYFIKATY.</a> Wystawienie nowego certyfikatu wymaga podania hasła Root CA, i poprawnego wypełnienia formularza.</p>
+			<p><span class="warn">Ważne! Należy zapamiętać bądź zapisac hasło zabezpieczające tworzony certyfikat, gdyż nie ma możliwośći zmiany bądź odzyskania hasła.</span></p>
+			</p><p><hr /></p>
+
+			<h3 id="download">4. Pobieranie certyfikatów</h3>
+			<p>Pliki certyfikatów jak i Root CA przechowywane są w badzie danych w postaci zaszyfrowanej, dla większego bezpieczeństwa. W każdej chwili możesz pobrać certyfikat oraz klucz prywatny wybranego certyfikatu lub swojego centrum autoryzacji.</p>
+			<p>Jeżeli posiadasz swój urząd certyfikacji, wejdź na stronę <a href="{{ url('user_area_root_ca_site') }}" title="Root CA">Root CA</a>, następnie wybierz zakładkę <a href="{{ url('acme_cert_download') }}" title="Pobierz pliki głównego certyfikau">POBIERZ</a>. Pobranie plików wymaga autoryzacji hasłem wykożystanym do zabezpieczenia urzędu certyfikacji.</p>
+
+			<p>W celu pobrania plików wystawionego certyfikatu, należy wejść na stronę <a href="{{ url('user_area_certs_site') }}" title="Certyfikaty klienta">certyfikatów</a>. Zostanie wówczas wyświetlona lista posiadanych certyfikatów, z której należy wybrać odpowiedni certyfikat i kliknąć pobierz. Podobnie jak w przypadku pobierania plików Root CA, zostaniesz przekierownay na stroę pobierania na której wymagana jest autoryzacja hasłem podanym do zabezpieczenia danego certyfikatu.</p>
+			</p><p><hr /></p>
+
+			<h3 id="delete">5. Kasowanie certyfikatów</h3>
+			<p>Kasowanie certyfikatów, które nie są już potrzebne bądź są narażone na utratę bezpieczeństwa, można usunąć na stronie <a href="{{ url('user_area_certs_site') }}" title="Certyfikaty klienta">certyfikatów</a>. Z wyświetlonej listy należy wybrać interesujący nas certyfikat i kliknąć usuń. Podobnie jak przy pobieraniu, zostaniemy przekierowany na odpowiednią stronę, na której w celu usunięcia certyfikatu należy podać haslo, wykożystane do zabezpieczenia certyfikatu.</p>
+			<p>Nie ma natomiast możliwości ręcznego usunięcia całego urzędu certyfikacji. Jeżeli zaistnieje taka potrzeba należy skontaktować się z administratorem za pomocą adresu e-mail: <a href="mailto: admin@auth-center.pl" title="Kontakt z administratorem">admin@auth-center.pl</a>.</p>
+			</p><p><hr /></p>
 		</div>
+		{% include('AcmeSiteBundle:Default:logotypes.html.twig') %}
 	{% endblock %}

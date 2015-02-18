@@ -70,7 +70,7 @@ p{
 }
 .footer-menu a:hover{
 	text-decoration: none;
-	margin-left: 3px;
+	margin-left: -3px;
 	transition-duration: 200ms;
 }
 
@@ -307,4 +307,13 @@ p{
 .logotypes img:hover{
 	opacity: 1;
 	transform: scale(1.1);
+}
+
+.warn {
+	font-size: 0.9em;
+	color: #b70909;
+}
+
+.helpPage p{
+	text-indent: 8px;
 }
